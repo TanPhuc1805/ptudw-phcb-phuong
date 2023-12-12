@@ -1,7 +1,22 @@
 const controller={};
+const models = require("../models");
+controller.show = async (req, res) => {
+  res.locals.places = await models.Place.findAll({
+    
+    attributes: [
+      "id",
+      "diaChi",
+      "khuVuc",
+      "loaiVT",
+      "hinhThuc",
+      "quyHoach",
+      "hinhAnh",
+    ],
+    order: [["createdAt", "DESC"]],
+    limit: 10,
+  });
 
-controller.show=(req,res)=>{
-    res.render("manageList");
+  res.render("manageList");
 };
 
 module.exports=controller;
