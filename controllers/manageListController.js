@@ -11,6 +11,8 @@ controller.show = async (req, res) => {
       "hinhThuc",
       "quyHoach",
       "hinhAnh",
+      "longitude",
+      "latitude"
     ],
     order: [["createdAt", "DESC"]],
     limit: 10,
