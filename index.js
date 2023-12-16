@@ -33,17 +33,23 @@ app.engine('hbs', expressHbs.engine({
         showIndex: (index) => index + 1,
     }
 }));
-
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.get("/",(req,res)=>{
     res.render("manageList");
 })
 
 app.get('/', (req, res) => res.redirect('/manageList'));
 
-app.use('/manageList.htm',require('./routes/manageListRouter'));
-app.use('/notifications.htm',require('./routes/notificationsRouter'));
-app.use('/reports.htm',require('./routes/reportsRouter'));
-app.use('/requests.htm',require('./routes/requestsRouter'));
+app.get('/create', (req, res) => {
+    let models = require('./models');
+    models.sequelize.sync().then(() => res.send('OK'))
+  })
+
+app.use('/manageList',require('./routes/manageListRouter'));
+app.use('/notifications',require('./routes/notificationsRouter'));
+app.use('/reports',require('./routes/reportsRouter'));
+app.use('/requests',require('./routes/requestsRouter'));
 
 app.set("view engine","hbs");
 
