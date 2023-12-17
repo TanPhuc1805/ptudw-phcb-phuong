@@ -3,12 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class Request extends Model {
         static associate(models) {
-        // define association here
-        // Tag.belongsToMany(models.Blog, {
-        //   through: "BlogTag",
-        //   foreignKey: "tagId",
-        //   otherKey: "blogId",
-        // });
+            Request.belongsTo(models.Place, { foreignKey: "placeId" });
         }
     }
     Request.init(
@@ -18,10 +13,13 @@ module.exports = (sequelize, DataTypes) => {
             dienThoai: DataTypes.STRING,
             email: DataTypes.STRING,
             diaChi: DataTypes.STRING,
-            khuVuc: DataTypes.STRING,
-            loaiVT: DataTypes.STRING,
-            longitude: DataTypes.REAL,
-            latitude: DataTypes.REAL,
+            //khuVuc: DataTypes.STRING,
+            //loaiVT: DataTypes.STRING,
+            //longitude: DataTypes.REAL,
+            //latitude: DataTypes.REAL,
+
+            placeId: DataTypes.INTEGER,
+
             tenBangQuangCao:DataTypes.STRING,
             loaiQC:DataTypes.STRING,
             kichThuoc:DataTypes.STRING,

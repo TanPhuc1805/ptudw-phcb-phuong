@@ -75,7 +75,20 @@
                               
                                 
                                 <div class="row  mb-3">
-                                  <div class="col">
+                                    <div class="col">
+                                    <div class="input">
+                                        <label class="form-label">Địa chỉ điểm đặt</label>
+                                        <select id="diaChiEditRequest" name="diaChiRequest" class="form-control select-form-control">
+                                        {{#each places}}
+                                        <option value="{{diaChi}}" selected="selected">{{diaChi}}</option>
+                                        {{/each}}
+                                        </select>
+                                      
+                                      
+                                    </div>
+                                  </div>
+                                    
+                                  {{!-- <div class="col">
                                     <div class="input">
                                         <label class="form-label">Địa chỉ điểm đặt</label>
                                       <input type="text" class="form-control " id="diaChiEditRequest" name="diaChi"
@@ -107,7 +120,7 @@
                                       <input type="text" class="form-control " id="longitudeEditRequest" name="longitude" required />
                                       
                                     </div>
-                                  </div>
+                                  </div> --}}
                                   </div>
                                   
                               
@@ -123,7 +136,7 @@
                                 <div class="row  mb-3">
                                   <div class="col">
                                     <div class="input">
-                                        <label class="form-label">Hình thức:</label>
+                                        <label class="form-label">Tên bảng quảng cáo:</label>
                                       <input type="text" class="form-control " name="tenBangQuangCao" id="tenBangQuangCaoEditRequest"
                                         required />
                                       
@@ -344,21 +357,25 @@
                                   <div class="col">
                                     <div class="input">
                                         <label class="form-label">Địa chỉ điểm đặt</label>
-                                      <input type="text" class="form-control " value="" id="diaChi" name="diaChi"
-                                        required />
+                                      <select id="diaChiEditRequest" name="diaChiRequest" class="form-control select-form-control">
+                                        {{#each places}}
+                                        <option value="{{diaChi}}" selected="selected">{{diaChi}}</option>
+                                        {{/each}}
+                                        </select>
+                                      
                                       
                                     </div>
                                   </div>
-                                  <div class="col">
+                                  {{!-- <div class="col">
                                     <div class="input">
                                         <label class="form-label">Vị trí: </label>
                                       <input type="text" class="form-control " value="" id="khuVuc" name="khuVuc"
                                         required />
                                       
                                     </div>
-                                  </div>
+                                  </div> --}}
                                 </div>
-                                <div class="row mb-3">
+                                {{!-- <div class="row mb-3">
                                   <div class="col">
                                     <div class="input">
                                         <label class="form-label">Loại vị trí:</label>
@@ -374,7 +391,7 @@
                                       
                                     </div>
                                   </div>
-                                  </div>
+                                  </div> --}}
                                   
                               
                               
@@ -679,7 +696,7 @@
                                     <tbody>
                                         {{#each requests}}
                                         <tr>
-                                            <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{diaChi}}','{{khuVuc}}','{{loaiVT}}','{{longitude}}','{{latitude}}','{{tenBangQuangCao}}','{{loaiQC}}','{{kichThuoc}}','{{soLuong}}','{{ngayBatDau}}','{{ngayKetThuc}}','{{tinhTrang}}')">
+                                            <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{Place.diaChi}}','{{Place.khuVuc}}','{{Place.loaiVT}}','{{Place.longitude}}','{{Place.latitude}}','{{tenBangQuangCao}}','{{loaiQC}}','{{kichThuoc}}','{{soLuong}}','{{ngayBatDau}}','{{ngayKetThuc}}','{{tinhTrang}}')">
                                                 <div class="d-flex px-2">
                                                     <div>
                                                         <img src="../assets/img/city.jpeg"
@@ -687,7 +704,7 @@
                                                             alt="spotify">
                                                     </div>
                                                     <div class="my-auto">
-                                                        <h6 class="mb-0 text-sm">{{diaChi}}</h6>
+                                                        <h6 class="mb-0 text-sm">{{Place.diaChi}}</h6>
                                                     </div>
                                                 </div>
                                             </td>
@@ -707,10 +724,10 @@
                                                        <i role="button" class="fa fa-pen-to-square text-info me-3" data-bs-toggle="modal"
                                                 data-bs-target="#editRequestModal" onclick="showEditRequestModal(this)" data-id="{{id}}"
                                                 data-cong-ty="{{congTy}}" data-dia-chi-cong-ty="{{diaChiCongTy}}" data-dien-thoai="{{dienThoai}}" data-email="{{email}}"
-data-dia-chi="{{diaChi}}" data-khu-vuc="{{khuVuc}}"
-    data-loai-v-t="{{loaiVT}}"
-    data-longitude="{{longitude}}"
-    data-latitude="{{latitude}}"
+data-dia-chi="{{Place.diaChi}}" data-khu-vuc="{{Place.khuVuc}}"
+    data-loai-v-t="{{Place.loaiVT}}"
+    data-longitude="{{Place.longitude}}"
+    data-latitude="{{Place.latitude}}"
     data-ten-bang-quang-cao="{{tenBangQuangCao}}"
     data-loai-q-c="{{loaiQC}}"
     data-kich-thuoc="{{kichThuoc}}"

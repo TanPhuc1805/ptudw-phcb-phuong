@@ -25,11 +25,7 @@ controller.addRequest = async (req, res) => {
     diaChiCongTy,
     dienThoai,
     email,
-    diaChi,
-    khuVuc,
-    loaiVT,
-    longitude,
-    latitude,
+    diaChiRequest,
     tenBangQuangCao,
     loaiQC,
     kichThuoc,
@@ -37,11 +33,14 @@ controller.addRequest = async (req, res) => {
     ngayBatDau,
     ngayKetThuc
   } = req.body;
+  console.log(req.body);
 
-  if (!congTy) {
-    res.send('Missing required property: congTy');
-    return;
-  }
+  const requestPlace = await models.Place.findOne({ 
+    attributes: ["id"],
+    where: {diaChi: diaChiRequest} 
+  });
+  let placeId = requestPlace.getDataValue("id");
+  
 
   try {
     await models.Request.create({
@@ -49,11 +48,7 @@ controller.addRequest = async (req, res) => {
       diaChiCongTy,
       dienThoai,
       email,
-      diaChi,
-      khuVuc,
-      loaiVT,
-      longitude,
-      latitude,
+      placeId:placeId,
       tenBangQuangCao,
       loaiQC,
       kichThuoc,
@@ -69,18 +64,42 @@ controller.addRequest = async (req, res) => {
   }
 };
 controller.show= async (req,res)=>{
+  res.locals.places = await models.Place.findAll({
+    
+    attributes: [
+      "id",
+      "diaChi",
+      "khuVuc",
+      "loaiVT",
+      "hinhThuc",
+      "quyHoach",
+      "hinhAnh",
+      "longitude",
+      "latitude"
+    ],
+    order: [["diaChi", "ASC"]],
+    where:{
+      khuVuc:"Phường 4, Quận 5"
+    }
+  });
+
     res.locals.requests = await models.Request.findAll({
+      include: [{
+        model: models.Place,
+        attributes: [
+          "diaChi",
+          "khuVuc",
+          "loaiVT",
+          "longitude",
+          "latitude"
+        ],
+      }],
         attributes: [
             "id",
             "congTy",
             "diaChiCongTy",
             "dienThoai",
             "email",
-            "diaChi",
-            "khuVuc",
-            "loaiVT",
-            "longitude",
-            "latitude",
             "tenBangQuangCao",
             "loaiQC",
             "kichThuoc",
@@ -95,6 +114,24 @@ controller.show= async (req,res)=>{
         // }
       });
     
+      res.locals.places = await models.Place.findAll({
+    
+    attributes: [
+      "id",
+      "diaChi",
+      "khuVuc",
+      "loaiVT",
+      "hinhThuc",
+      "quyHoach",
+      "hinhAnh",
+      "longitude",
+      "latitude"
+    ],
+    order: [["diaChi", "ASC"]],
+    where:{
+      khuVuc:"Phường 4, Quận 5"
+    }
+  });
       res.render("requests");
 };
 
@@ -104,11 +141,7 @@ controller.editRequest = async (req, res) => {
     diaChiCongTy,
     dienThoai,
     email,
-    diaChi,
-    khuVuc,
-    loaiVT,
-    longitude,
-    latitude,
+    diaChiRequest,
     tenBangQuangCao,
     loaiQC,
     kichThuoc,
@@ -117,6 +150,11 @@ controller.editRequest = async (req, res) => {
     ngayKetThuc,
     tinhTrang} = req.body;
   
+    const requestPlace = await models.Place.findOne({ 
+      attributes: ["id"],
+      where: {diaChi: diaChiRequest} 
+    });
+    let placeId = requestPlace.getDataValue("id");
   try {
     await models.Request.update(
       { 
@@ -124,11 +162,7 @@ controller.editRequest = async (req, res) => {
         diaChiCongTy,
         dienThoai,
         email,
-        diaChi,
-        khuVuc,
-        loaiVT,
-        longitude,
-        latitude,
+        placeId:placeId,
         tenBangQuangCao,
         loaiQC,
         kichThuoc,

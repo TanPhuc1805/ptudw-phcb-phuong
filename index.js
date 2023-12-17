@@ -35,9 +35,6 @@ app.engine('hbs', expressHbs.engine({
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.get("/",(req,res)=>{
-    res.render("manageList");
-})
 
 app.get('/', (req, res) => res.redirect('/manageList'));
 

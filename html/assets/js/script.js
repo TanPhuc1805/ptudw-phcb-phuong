@@ -297,9 +297,7 @@ function showEditRequestModal(btn) {
   document.querySelector("#dienThoaiEditRequest").value = btn.dataset.dienThoai;
   document.querySelector("#emailEditRequest").value = btn.dataset.email;
   document.querySelector("#diaChiEditRequest").value = btn.dataset.diaChi;
-  document.querySelector("#khuVucEditRequest").value = btn.dataset.khuVuc;
-  document.querySelector("#loaiVTEditRequest").value = btn.dataset.loaiVT;
-  document.querySelector("#longitudeEditRequest").value = btn.dataset.longitude;
+  
   document.querySelector("#tenBangQuangCaoEditRequest").value = btn.dataset.tenBangQuangCao;
   document.querySelector("#loaiQCEditRequest").value = btn.dataset.loaiQC;
   document.querySelector("#kichThuocEditRequest").value = btn.dataset.kichThuoc;

@@ -3,12 +3,9 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class Place extends Model {
         static associate(models) {
-        // define association here
-        // Tag.belongsToMany(models.Blog, {
-        //   through: "BlogTag",
-        //   foreignKey: "tagId",
-        //   otherKey: "blogId",
-        // });
+            Place.hasMany(models.Request, {
+                foreignKey: 'placeId'
+            });
         }
     }
     Place.init(
