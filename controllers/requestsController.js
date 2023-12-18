@@ -4,7 +4,7 @@ const models = require("../models");
 controller.deleteRequest=async(req,res)=>{
   let id = isNaN(req.params.id) ? 0 : parseInt(req.params.id);
   try {
-    await models.Request.destroy(
+    await models.Requestadsphuong.destroy(
       {where: {id}}
     );
     res.send("Đã xoá yêu cầu!");
@@ -43,7 +43,7 @@ controller.addRequest = async (req, res) => {
   
 
   try {
-    await models.Request.create({
+    await models.Requestadsphuong.create({
       congTy,
       diaChiCongTy,
       dienThoai,
@@ -83,7 +83,7 @@ controller.show= async (req,res)=>{
     }
   });
 
-    res.locals.requests = await models.Request.findAll({
+    res.locals.requests = await models.Requestadsphuong.findAll({
       include: [{
         model: models.Place,
         attributes: [
@@ -156,7 +156,7 @@ controller.editRequest = async (req, res) => {
     });
     let placeId = requestPlace.getDataValue("id");
   try {
-    await models.Request.update(
+    await models.Requestadsphuong.update(
       { 
         congTy,
         diaChiCongTy,

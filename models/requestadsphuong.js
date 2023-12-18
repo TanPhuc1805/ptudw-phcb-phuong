@@ -1,22 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class Request extends Model {
+    class Requestadsphuong extends Model {
         static associate(models) {
-            Request.belongsTo(models.Place, { foreignKey: "placeId" });
+            Requestadsphuong.belongsTo(models.Place, { foreignKey: "placeId" });
         }
     }
-    Request.init(
+    Requestadsphuong.init(
         {
             congTy: DataTypes.STRING,
             diaChiCongTy: DataTypes.STRING,
             dienThoai: DataTypes.STRING,
             email: DataTypes.STRING,
-            diaChi: DataTypes.STRING,
-            //khuVuc: DataTypes.STRING,
-            //loaiVT: DataTypes.STRING,
-            //longitude: DataTypes.REAL,
-            //latitude: DataTypes.REAL,
 
             placeId: DataTypes.INTEGER,
 
@@ -30,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {
             sequelize,
-            modelName: "Request",
+            modelName: "Requestadsphuong",
         }
     );
-    return Request;
+    return Requestadsphuong;
 };
