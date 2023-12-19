@@ -20,7 +20,36 @@ controller.show = async (req, res) => {
     }
   });
 
-  res.render("manageList");
+  res.locals.placedetails = await models.Placedetail.findAll({
+    include: [{
+      model: models.Place,
+      attributes: [
+        "diaChi",
+        "khuVuc",
+        "loaiVT"
+      ],
+    }],
+    attributes: [
+      "id",
+      "adName",
+      "adSize",
+      "adQuantity",
+      "expireDay",
+      "imagePath",
+    ],
+    where: {
+      '$Place.khuVuc$': 'Phường 4, Quận 5'
+    },
+    order: [["createdAt", "DESC"]],
+    
+  });
+
+  res.render("manageList", {
+    placedetails: res.locals.placedetails.map(detail => ({
+      ...detail.toJSON(),
+      formattedExpireDay: moment(detail.expireDay).format('MM/DD/YYYY'),
+    })),  
+  });
 };
 controller.requestEditPlace = async (req, res) => {
   let {diaChi, khuVuc, loaiVT, hinhThuc, isQuyHoach, liDoChinhSua} = req.body;

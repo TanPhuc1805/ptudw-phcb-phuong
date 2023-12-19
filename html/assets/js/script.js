@@ -354,20 +354,6 @@ function openCustomDown(elm) {
       elm.parentElement.querySelector('.customDown').style.display = "none";
 }
 
-function openViewDetail(elm, wardName, districtName, zipCode, population) {
-  console.log("openViewDetail function called");
-  let div = document.createElement('div');
-  div.classList.add('modal-backdrop', 'fade', 'show');
-  document.body.appendChild(div);
-
-  let ancElm = elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal');
-  ancElm.classList.add('show');
-  elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal.detail-ward').style.display = "block";
-
-  ancElm.querySelector('.detail-card :nth-child(1) span').textContent = wardName + ", " + districtName;
-  ancElm.querySelector('.detail-card :nth-child(3) .span-content').textContent = zipCode;
-  ancElm.querySelector('.detail-card :nth-child(4) .span-content').textContent = population;
-}
 
 function openViewPlaceDetail(elm, diaChi, khuVuc, loaiVT, hinhThuc, quyHoach, hinhAnh) {
   let div = document.createElement('div');
@@ -383,11 +369,13 @@ function openViewPlaceDetail(elm, diaChi, khuVuc, loaiVT, hinhThuc, quyHoach, hi
   ancElm.querySelector('.detail-card :nth-child(4) .span-content').textContent = hinhThuc;
   ancElm.querySelector('.detail-card :nth-child(5) .span-content').textContent = quyHoach;
 
-  ancElm.querySelector('.img-card :nth-child(1)').textContent = diaChi;
+
 
   if (hinhAnh) ancElm.querySelector('img').src = hinhAnh;
 
 }
+
+
 
 function openViewRequestDetail(elm,congTy,
   diaChiCongTy,
