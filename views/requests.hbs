@@ -245,7 +245,7 @@
                                             <ul class="dropdown-menu  dropdown-menu-end px-1 py-1"
                                                 aria-labelledby="dropdownMenuButton">
                                                 <li>
-                                                    <a class="dropdown-item text-center" href="javascript:;">
+                                                    <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('diaChi', 'tableRequest')">
                                                         <button class="btn btn-outline-info w-100" type="button"
                                                             data-target="infoToast"><i
                                                                 class="fa-solid fa-arrow-up-a-z pe-1"></i>Địa chỉ
@@ -253,7 +253,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item text-center" href="javascript:;">
+                                                    <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('congTy', 'tableRequest')">
                                                         <button class="btn btn-outline-info w-100" type="button"
                                                             data-target="infoToast"><i
                                                                 class="fa-solid fa-arrow-up-a-z pe-1"></i>Công ty
@@ -261,7 +261,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item text-center" href="javascript:;">
+                                                    <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('loaiQC', 'tableRequest')">
                                                         <button class="btn btn-outline-info w-100" type="button"
                                                             data-target="infoToast"><i
                                                                 class="fa-solid fa-arrow-up-a-z pe-1"></i>Hình thức quảng cáo
@@ -269,7 +269,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item text-center" href="javascript:;">
+                                                    <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('tinhTrang', 'tableRequest')">
                                                         <button class="btn btn-outline-info w-100" type="button"
                                                             data-target="infoToast"><i
                                                                 class="fa-solid fa-arrow-up-z-a  pe-1"></i>Tình trạng
@@ -670,7 +670,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                <table class="table align-items-center justify-content-center mb-0">
+                                <table id="tableRequest" class="table align-items-center justify-content-center mb-0">
                                     <thead>
                                         <tr>
                                             <th
@@ -695,7 +695,8 @@
                                     </thead>
                                     <tbody>
                                         {{#each requests}}
-                                        <tr>
+                                        <tr data-phuong="{{Place.khuVuc}}" data-diaChi="{{Place.diaChi}}" data-congTy="{{congTy}}"
+                    data-loaiQC="{{loaiQC}}" data-tinhTrang="{{tinhTrang}}">
                                             <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{Place.diaChi}}','{{Place.khuVuc}}','{{Place.loaiVT}}','{{Place.longitude}}','{{Place.latitude}}','{{tenBangQuangCao}}','{{loaiQC}}','{{kichThuoc}}','{{soLuong}}','{{ngayBatDau}}','{{ngayKetThuc}}','{{tinhTrang}}')">
                                                 <div class="d-flex px-2">
                                                     <div>

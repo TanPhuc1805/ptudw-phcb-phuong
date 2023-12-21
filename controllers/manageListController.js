@@ -1,5 +1,6 @@
 const controller={};
 const models = require("../models");
+const moment = require('moment');
 controller.show = async (req, res) => {
   res.locals.places = await models.Place.findAll({
     
@@ -25,8 +26,7 @@ controller.show = async (req, res) => {
       model: models.Place,
       attributes: [
         "diaChi",
-        "khuVuc",
-        "loaiVT"
+        "khuVuc"
       ],
     }],
     attributes: [
@@ -40,7 +40,7 @@ controller.show = async (req, res) => {
     where: {
       '$Place.khuVuc$': 'Phường 4, Quận 5'
     },
-    order: [["createdAt", "DESC"]],
+    order: [[models.Place, "diaChi", "ASC"]],
     
   });
 
@@ -68,4 +68,38 @@ controller.requestEditPlace = async (req, res) => {
     console.error(error);
   }
 }
+
+controller.requestEditAds = async (req, res) => {
+  let {adName, diaChiAds, adSize, adQuantity, expireDay, liDoChinhSua} = req.body;
+
+  const parsedDate = moment(expireDay, 'MM/DD/YYYY', true);
+  const isValidDate = parsedDate.isValid();
+
+  if (!isValidDate) {
+    return res.json({ error: true, message: 'Ngày không hợp lệ!' });
+  }
+
+  const adsPlace = await models.Place.findOne({ 
+    attributes: ["id"],
+    where: {diaChi: diaChiAds} 
+  });
+
+  let placeId = adsPlace.getDataValue("id");
+
+  try {
+    await models.Requesteditads.create({
+      placeId: placeId,
+      adName, 
+      adSize, 
+      adQuantity, 
+      expireDay, 
+      liDoChinhSua
+    });
+    res.redirect("/manageList");
+  } catch (error) {
+    res.send("Không thể gửi yêu cầu chỉnh sửa bảng QC");
+    console.error(error);
+}
+}
+
 module.exports=controller;

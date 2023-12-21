@@ -47,6 +47,8 @@ app.use('/manageList',require('./routes/manageListRouter'));
 app.use('/notifications',require('./routes/notificationsRouter'));
 app.use('/reports',require('./routes/reportsRouter'));
 app.use('/requests',require('./routes/requestsRouter'));
+app.use('/profile',require('./routes/profileRouter'));
+app.use('/changePassword',require('./routes/changePasswordRouter'));
 
 app.set("view engine","hbs");
 

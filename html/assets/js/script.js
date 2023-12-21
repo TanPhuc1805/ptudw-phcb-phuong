@@ -280,6 +280,24 @@ function checkFormChanges(currentValues) {
   saveBtn.disabled = !isFormChanged;
 }
 
+function openViewAdsDetail(elm, adName, diaChi, khuVuc, adSize, adQuantity, expireDay, imagePath) {
+  let div = document.createElement('div');
+  div.classList.add('modal-backdrop', 'fade', 'show');
+  document.body.appendChild(div);
+
+  let ancElm = elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal');
+  ancElm.classList.add('show');
+  elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal.detail-ads').style.display = "block";
+
+  ancElm.querySelector('.detail-card :nth-child(1) span').textContent = adName;
+  ancElm.querySelector('.detail-card :nth-child(2) .span-content').textContent = diaChi + ", " + khuVuc;
+  ancElm.querySelector('.detail-card :nth-child(3) .span-content').textContent = adSize;
+  ancElm.querySelector('.detail-card :nth-child(4) .span-content').textContent = adQuantity;
+  ancElm.querySelector('.detail-card :nth-child(5) .span-content').textContent = expireDay;
+
+  if (imagePath) ancElm.querySelector('img').src = imagePath;
+}
+
 function showEditPlaceModal(btn) {
   document.querySelector("#idPlace").value = btn.dataset.id;
   document.querySelector("#diaChiEdit").value = btn.dataset.diaChi;
@@ -304,6 +322,15 @@ function showEditRequestModal(btn) {
   document.querySelector("#soLuongEditRequest").value = btn.dataset.soLuong;
   document.querySelector("#ngayBatDauEditRequest").value = btn.dataset.ngayBatDau;
   document.querySelector("#ngayKetThucEditRequest").value = btn.dataset.ngayKetThuc;
+}
+
+function showEditAdsModal(btn) {
+  document.querySelector("#idAds").value = btn.dataset.id;
+  document.querySelector("#adNameEdit").value = btn.dataset.adName;
+  document.querySelector("#diaChiAdsEdit").value = btn.dataset.diaChi;
+  document.querySelector("#adSizeEdit").value = btn.dataset.adSize;
+  document.querySelector("#adQuantityEdit").value = btn.dataset.adQuantity;
+  document.querySelector("#expireDayEdit").value = btn.dataset.expireDay;
 }
 
 async function editRequest(e) {
@@ -439,6 +466,12 @@ function closeViewDetailPlace(elm) {
   elm.closest('.modal.detail-place').style.display = "none";
   document.querySelector('.modal-backdrop.fade.show').remove();
 }
+
+function closeViewAdsDetail(elm) {
+  elm.closest('.modal.detail-ads').classList.remove('show');
+  elm.closest('.modal.detail-ads').style.display = "none";
+  document.querySelector('.modal-backdrop.fade.show').remove();
+}
 // searching
 document.getElementById('phuongDropdown').addEventListener('change', function () {
   var selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
@@ -463,27 +496,61 @@ document.getElementById('phuongDropdown').addEventListener('change', function ()
   }
 });
 
-// sort places
-document.addEventListener("DOMContentLoaded", function () {
-    const tableBody = document.querySelector("#filteredContent tbody");
-    const sortButtons = document.querySelectorAll("[data-sort]");
+// // sort places
+// document.addEventListener("DOMContentLoaded", function () {
+//     const tableBody = document.querySelector("#filteredContent tbody");
+//     const sortButtons = document.querySelectorAll("[data-sort]");
 
-    sortButtons.forEach((button) => {
-      button.addEventListener("click", function () {
-        const sortBy = this.getAttribute("data-sort");
+//     sortButtons.forEach((button) => {
+//       button.addEventListener("click", function () {
+//         const sortBy = this.getAttribute("data-sort");
 
-        const rows = Array.from(tableBody.querySelectorAll("tr"));
-        const sortedRows = rows.sort((a, b) => {
-          const valueA = a.querySelector(`[data-sort="${sortBy}"]`).textContent.trim().toLowerCase();
-          const valueB = b.querySelector(`[data-sort="${sortBy}"]`).textContent.trim().toLowerCase();
-          return valueA.localeCompare(valueB);
-        });
-        tableBody.innerHTML = "";
-        sortedRows.forEach((row) => {
-          tableBody.appendChild(row);
-        });
-      });
-    });
+//         const rows = Array.from(tableBody.querySelectorAll("tr"));
+//         const sortedRows = rows.sort((a, b) => {
+//           const valueA = a.querySelector(`[data-sort="${sortBy}"]`).textContent.trim().toLowerCase();
+//           const valueB = b.querySelector(`[data-sort="${sortBy}"]`).textContent.trim().toLowerCase();
+//           return valueA.localeCompare(valueB);
+//         });
+//         tableBody.innerHTML = "";
+//         sortedRows.forEach((row) => {
+//           tableBody.appendChild(row);
+//         });
+//       });
+//     });
+//   });
+
+function sortTable(column, tableId) {
+  console.log('Sorting by column:', column);
+
+  const table = document.querySelector(`#${tableId} tbody`);
+  const rows = Array.from(table.getElementsByTagName('tr'));
+
+  rows.sort((a, b) => {
+      const aValue = a.getAttribute(`data-${column}`);
+      const bValue = b.getAttribute(`data-${column}`);
+
+      if (aValue === null || bValue === null) {
+          return 0;
+      }
+
+      // Convert the formatted date to a JavaScript Date object for comparison
+      const dateA = new Date(aValue);
+      const dateB = new Date(bValue);
+
+      // Check if the conversion is successful
+      if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+          // If conversion fails, fall back to localeCompare
+          return aValue.localeCompare(bValue);
+      }
+
+      // Compare dates
+      return dateA - dateB;
   });
+
+  rows.forEach(row => {
+      table.appendChild(row);
+  });
+}
+
 
 

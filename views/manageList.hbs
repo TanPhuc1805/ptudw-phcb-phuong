@@ -79,28 +79,91 @@
   </div>
 </div>
 
+<div class="modal fade" id="editAdsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="/manageList/editads" id="editAdsForm" method="POST" onsubmit="editAds(event)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Chỉnh Sửa Thông Tin Bảng Quảng Cáo
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2">
+            <div class="col mb-3">
+              <label for="adNameEdit" class="form-label">Tên bảng QC</label>
+              <input type="text" id="adNameEdit" name="adName" class="form-control" placeholder="Chợ An Đông"
+                required />
+            </div>
+            <div class="col mb-3">
+              <label for="adSizeEdit" class="form-label">Kích thước</label>
+              <input type="text" id="adSizeEdit" name="adSize" class="form-control" placeholder="Phường 9, Quận 5"
+                required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <label for="diaChiAdsEdit" class="form-label">Địa chỉ</label>
+              <select id="diaChiAdsEdit" name="diaChiAds" class="form-control select-form-control">
+                {{#each places}}
+                <option value="{{diaChi}}" selected="selected">{{diaChi}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col mb-3">
+              <label for="adQuantityEdit" class="form-label">Số lượng</label>
+              <input type="text" id="adQuantityEdit" name="adQuantity" class="form-control" placeholder="Chợ" />
+            </div>
+            <div class="col mb-3">
+              <label for="expireDayEdit" class="form-label">Ngày hết hạn</label>
+              <input type="text" id="expireDayEdit" name="expireDay" class="form-control"
+                placeholder="Quảng cáo thương mại" oninput="checkValidDate(this, event)" />
+            </div>
+          </div>
+          <div class="row g-2 mb-3">
+            <label for="liDoChinhSua" class="form-label">Lí Do Chỉnh Sửa</label>
+            <input type="text" id="liDoChinhSua" name="liDoChinhSua" class="form-control"
+              placeholder="Sai thông tin / Chỉnh sửa hình ảnh" />
+          </div>
+
+          <div class="row g-2">
+            <div class="row mb-3 mt-3">
+              <h6><span>Thời điểm chỉnh sửa: </span>
+                <script>
+                  document.write(new Date().getDate());
+                  document.write('/');
+                  document.write(new Date().getMonth());
+                  document.write('/');
+                  document.write(new Date().getFullYear());
+                </script>
+              </h6>
+            </div>
+          </div>
+          <div class="text-center badge bg-label-danger" id="errorMessage"></div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="id" id="idAds" value="" />
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="closeBtnEdit">
+            Đóng
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Gửi Yêu Cầu
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 {{>sidebar curPage="Điểm đặt bảng quảng cáo"}}
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
   <!-- Navbar -->
   {{>navbar curPage="Điểm đặt bảng quảng cáo"}}
   <!-- End Navbar -->
   <div class="container-fluid py-4">
-    <div class="card-body mb-0">
-      <div class="row">
-        <div class="col-lg-2">
-          <li class="nav-item dropdown align-items-center" style="display: inline;">
-            <div class="dropdown-menu dropdown-menu-end px-1 py-1" aria-labelledby="dropdownMenuButton">
-              <select class="form-control form-select" id="phuongDropdown" multiple>
-                <option value="all">All Phường</option>
-                {{#each places}}
-                <option value="{{khuVuc}}">{{khuVuc}}</option>
-                {{/each}}
-              </select>
-            </div>
-          </li>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-12">
         <div class="card my-4">
@@ -123,29 +186,29 @@
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-end px-1 py-1" aria-labelledby="dropdownMenuButton">
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
-                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast" data-sort="diaChi"><i
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('diaChi', 'tablePlace')">
+                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast" ><i
                               class="fa-solid fa-arrow-up-a-z pe-1"></i>Địa chỉ
                           </button>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
-                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast" data-sort="khuVuc"><i
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('khuVuc', 'tablePlace')">
+                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast" ><i
                               class="fa-solid fa-arrow-up-a-z pe-1"></i>Khu vực
                           </button>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
-                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast" data-sort="loaiVT"><i
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('loaiVT', 'tablePlace')">
+                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast" ><i
                               class="fa-solid fa-arrow-up-a-z pe-1"></i>Loại Vị Trí
                           </button>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
-                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"data-sort="hinhThuc"><i
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('hinhThuc', 'tablePlace')">
+                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"><i
                               class="fa-solid fa-arrow-up-a-z pe-1"></i>Hình thức 
                           </button>
                         </a>
@@ -158,7 +221,7 @@
           </div>
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0" id="filteredContent">
-              <table class="table align-items-center justify-content-center mb-0">
+              <table id="tablePlace" class="table align-items-center justify-content-center mb-0">
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Địa chỉ</th>
@@ -171,8 +234,9 @@
                 </thead>
                 <tbody>
                   {{#each places}}
-                  <tr data-phuong="{{khuVuc}}">
-                    <td data-sort="diaChi"
+                  <tr data-phuong="{{khuVuc}}" data-diaChi="{{diaChi}}" data-khuVuc="{{khuVuc}}"
+                    data-loaiVT="{{loaiVT}}" data-hinhThuc="{{hinhThuc}}">
+                    <td 
                       onclick="openViewPlaceDetail(this, '{{diaChi}}', '{{khuVuc}}', '{{loaiVT}}', '{{hinhThuc}}', '{{quyHoach}}')"
                       style="cursor: pointer; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
                       <div class="d-flex px-2">
@@ -185,13 +249,13 @@
                         </div>
                       </div>
                     </td>
-                    <td data-sort="khuVuc" style="max-width: 160px; overflow: hidden; text-overflow: ellipsis;">
+                    <td  style="max-width: 160px; overflow: hidden; text-overflow: ellipsis;">
                       <span class="text-xs text-secondary mb-0">{{khuVuc}}</span>
                     </td>
-                    <td data-sort="loaiVT"  style="max-width: 160px; overflow: hidden; text-overflow: ellipsis;">
+                    <td   style="max-width: 160px; overflow: hidden; text-overflow: ellipsis;">
                       <span class="text-xs text-secondary">{{loaiVT}}</span>
                     </td>
-                    <td data-sort="hinhThuc" class="align-middle text-center">
+                    <td  class="align-middle text-center">
                       <div class="d-flex align-items-center">
                         <span class="me-2 text-xs text-secondary">{{hinhThuc}}</span>
                       </div>
@@ -616,30 +680,37 @@
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-end px-1 py-1" aria-labelledby="dropdownMenuButton">
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('adName', 'tableAds')">
                           <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"
-                            data-sort="diaChi"><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Địa chỉ
+                            ><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Tên bảng
                           </button>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('diaChi', 'tableAds')">
                           <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"
-                            data-sort="khuVuc"><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Khu vực
+                            ><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Địa chỉ
                           </button>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('adSize', 'tableAds')">
                           <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"
-                            data-sort="loaiVT"><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Loại Vị Trí
+                            ><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Kích thước
                           </button>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item text-center" href="javascript:;">
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('adQuantity', 'tableAds')">
                           <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"
-                            data-sort="hinhThuc"><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Hình thức
+                            ><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Số lượng
+                          </button>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('formattedExpireDay', 'tableAds')">
+                          <button class="btn btn-outline-success w-100" type="button" data-target="infoToast"
+                            ><i class="fa-solid fa-arrow-up-a-z pe-1"></i>Ngày hết hạn
                           </button>
                         </a>
                       </li>
@@ -714,7 +785,7 @@
                 </div>
               </div>
 
-              <table class="table align-items-center justify-content-center mb-0">
+              <table id="tableAds" class="table align-items-center justify-content-center mb-0">
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên bảng</th>
@@ -731,7 +802,7 @@
                 </thead>
                 <tbody>
                                     {{#each placedetails}}
-                                    <tr>
+                                    <tr data-adName="{{adName}}" data-adQuantity="{{adQuantity}}" data-formattedExpireDay="{{formattedExpireDay}}" data-adSize="{{adSize}}" data-diaChi="{{Place.diaChi}}">
                                         <td style="cursor: pointer; max-width: 250px; overflow: hidden; text-overflow: ellipsis;" onclick="openViewAdsDetail(this, '{{adName}}', '{{Place.diaChi}}', '{{Place.khuVuc}}', '{{adSize}}', '{{adQuantity}}', '{{formattedExpireDay}}', '{{imagePath}}')">
                                             <div class="d-flex px-2">
                                                 <div>
