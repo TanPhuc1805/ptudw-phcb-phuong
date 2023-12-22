@@ -2,6 +2,15 @@ const controller={};
 const models = require("../models");
 const moment = require('moment');
 controller.show = async (req, res) => {
+  
+  res.locals.adstypes = await models.Adstype.findAll({
+    attributes: [
+      "id",
+      "name",
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+
   res.locals.places = await models.Place.findAll({
     
     attributes: [
@@ -15,7 +24,7 @@ controller.show = async (req, res) => {
       "longitude",
       "latitude"
     ],
-    order: [["diaChi", "ASC"]],
+    order: [["createdAt", "DESC"]],
     where:{
       khuVuc:"Phường 4, Quận 5"
     }
@@ -40,7 +49,7 @@ controller.show = async (req, res) => {
     where: {
       '$Place.khuVuc$': 'Phường 4, Quận 5'
     },
-    order: [[models.Place, "diaChi", "ASC"]],
+    order: [[models.Place, "createdAt", "DESC"]],
     
   });
 

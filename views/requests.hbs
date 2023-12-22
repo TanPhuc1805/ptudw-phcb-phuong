@@ -145,8 +145,11 @@
                                   <div class="col">
                                     <div class="input">
                                         <label class="form-label">Loại bảng quảng cáo: </label>
-                                      <input type="text" class="form-control " name="loaiQC" id="loaiQCEditRequest"
-                                        required />
+                                      <select name="loaiQC" id="loaiQCEditRequest" class="form-control select-form-control">
+                                        {{#each adstypes}}
+                                        <option value="{{name}}" selected="selected">{{name}}</option>
+                                        {{/each}}
+                                        </select>
                                       
                                     </div>
                                   </div>
@@ -404,19 +407,23 @@
                               
                                 
                                 <div class="row  mb-3">
+                                  
                                   <div class="col">
                                     <div class="input">
-                                        <label class="form-label">Hình thức:</label>
-                                      <input type="text" class="form-control " value="" id="loaiQC" name="loaiQC"
+                                        <label class="form-label">Loại bảng quảng cáo: </label>
+                                      <input type="text" class="form-control " value="" id="tenBangQuangCao" name="tenBangQuangCao"
                                         required />
                                       
                                     </div>
                                   </div>
                                   <div class="col">
                                     <div class="input">
-                                        <label class="form-label">Loại bảng quảng cáo: </label>
-                                      <input type="text" class="form-control " value="" id="tenBangQuangCao" name="tenBangQuangCao"
-                                        required />
+                                        <label class="form-label">Hình thức:</label>
+                                        <select name="loaiQC" id="loaiQC" class="form-control select-form-control">
+                                {{#each adstypes}}
+                                <option value="{{name}}" selected="selected">{{name}}</option>
+                                {{/each}}
+                              </select>
                                       
                                     </div>
                                   </div>

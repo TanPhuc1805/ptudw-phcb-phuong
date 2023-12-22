@@ -1,12 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class Requestadsphuong extends Model {
+    class Requestads extends Model {
         static associate(models) {
-            Requestadsphuong.belongsTo(models.Place, { foreignKey: "placeId" });
+            Requestads.belongsTo(models.Place, { foreignKey: "placeId" });
         }
     }
-    Requestadsphuong.init(
+    Requestads.init(
         {
             congTy: DataTypes.STRING,
             diaChiCongTy: DataTypes.STRING,
@@ -25,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {
             sequelize,
-            modelName: "Requestadsphuong",
+            modelName: "Requestads",
         }
     );
-    return Requestadsphuong;
+    return Requestads;
 };

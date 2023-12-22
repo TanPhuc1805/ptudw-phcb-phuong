@@ -4,7 +4,7 @@ const models = require("../models");
 controller.deleteRequest=async(req,res)=>{
   let id = isNaN(req.params.id) ? 0 : parseInt(req.params.id);
   try {
-    await models.Requestadsphuong.destroy(
+    await models.Requestads.destroy(
       {where: {id}}
     );
     res.send("Đã xoá yêu cầu!");
@@ -43,7 +43,7 @@ controller.addRequest = async (req, res) => {
   
 
   try {
-    await models.Requestadsphuong.create({
+    await models.Requestads.create({
       congTy,
       diaChiCongTy,
       dienThoai,
@@ -64,6 +64,15 @@ controller.addRequest = async (req, res) => {
   }
 };
 controller.show= async (req,res)=>{
+  
+  res.locals.adstypes = await models.Adstype.findAll({
+    attributes: [
+      "id",
+      "name",
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+
   res.locals.places = await models.Place.findAll({
     
     attributes: [
@@ -83,7 +92,7 @@ controller.show= async (req,res)=>{
     }
   });
 
-    res.locals.requests = await models.Requestadsphuong.findAll({
+    res.locals.requests = await models.Requestads.findAll({
       include: [{
         model: models.Place,
         attributes: [
@@ -108,7 +117,7 @@ controller.show= async (req,res)=>{
             "ngayKetThuc",
             "tinhTrang"
         ],
-        order: [["congTy", "ASC"]],
+        order: [["createdAt", "DESC"]],
         // where:{
         //   khuVuc:"Phường 4, Quận 5"
         // }
@@ -156,7 +165,7 @@ controller.editRequest = async (req, res) => {
     });
     let placeId = requestPlace.getDataValue("id");
   try {
-    await models.Requestadsphuong.update(
+    await models.Requestads.update(
       { 
         congTy,
         diaChiCongTy,
