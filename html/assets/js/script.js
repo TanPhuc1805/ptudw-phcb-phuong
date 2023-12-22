@@ -86,6 +86,41 @@ document.querySelectorAll(".delete-request-btn").forEach((btnConfirm) => {
   });
 });
 
+document.querySelectorAll(".email-request-btn").forEach((btnConfirm) => {
+  btnConfirm.addEventListener("click", (e) => {
+    let email=e.target.dataset.email;
+    let tinhTrang = e.target.dataset.tinhTrang;
+    let diaChi = e.target.dataset.diaChi;
+    let khuVuc = e.target.dataset.khuVuc;
+    let tenBangQuangCao = e.target.dataset.tenBangQuangCao;
+    let loaiQC = e.target.dataset.loaiQC;
+    let kichThuoc=e.target.dataset.kichThuoc;
+    let soLuong = e.target.dataset.soLuong;
+    let ngayBatDau = e.target.dataset.ngayBatDau;
+    let ngayKetThuc = e.target.dataset.ngayKetThuc;
+    console.log(email);
+
+    const options = {
+      title: `Gửi email`,
+      type: "info",
+      btnOkText: "Gửi",
+      btnCancelText: "Thoát",
+      onConfirm: () => {
+        console.log("Confirm");
+        sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,kichThuoc,ngayBatDau,ngayKetThuc);
+      },
+      onCancel: () => {
+        console.log("Cancel");
+      },
+    };
+    const {
+      el,
+      content,
+      options: confirmedOptions,
+    } = bs5dialog.confirm(`Bạn có muốn gửi kết quả đến email: ${email} `, options);
+  });
+});
+
 // document.querySelectorAll(".place-delete-btn").forEach((btnConfirm) => {
 //   btnConfirm.addEventListener("click", (e) => {
 //     let id = e.target.dataset.id;
@@ -354,25 +389,7 @@ async function editRequest(e) {
 }
 
 
-// async function editPlace(e) {
-//   e.preventDefault();
 
-//   const formData = new FormData(document.getElementById("addPlaceModal"));
-//   const data = Object.fromEntries(formData.entries());
-
-//   // data = {
-//   //   wardName: document.querySelector('#wardNameEdit').value,
-//   // }
-
-//   let res = await fetch('/danh-sach/editplace', {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-//   location.reload();
-// }
 
 function openCustomDown(elm) {
   if (elm.parentElement.querySelector('.customDown').style.display === "none")
@@ -428,6 +445,15 @@ function openViewRequestDetail(elm,congTy,
   ancElm.classList.add('show');
   elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal.detail-request').style.display = "block";
   ancElm.querySelector('#tinhTrang').textContent=tinhTrang;
+  if (tinhTrang="Chờ phê duyệt") {
+    ancElm.querySelector('#tinhTrang').classList.add('text-warning');
+  }
+  else if (tinhTrang="Đã phê duyệt") {
+    ancElm.querySelector('#tinhTrang').classList.add('text-success');
+  }
+  else if (tinhTrang="Không phê duyệt") {
+    ancElm.querySelector('#tinhTrang').classList.add('text-danger');
+  }
   ancElm.querySelector('.detail-card-part-1 :nth-child(1) .span-content').textContent=congTy;
   ancElm.querySelector('.detail-card-part-1 :nth-child(2) .span-content').textContent=diaChiCongTy;
   ancElm.querySelector('.detail-card-part-1 :nth-child(3) .span-content').textContent=dienThoai;
@@ -446,7 +472,6 @@ function openViewRequestDetail(elm,congTy,
   ancElm.querySelector('.detail-card-part-3 :nth-child(6) .span-content').textContent=ngayKetThuc;
 
   ancElm.querySelector('#img-title').textContent=diaChi;
-
 
 }
 function closeViewRequestDetail(elm) {
@@ -495,29 +520,7 @@ document.getElementById('phuongDropdown').addEventListener('change', function ()
       });
   }
 });
-
-// // sort places
-// document.addEventListener("DOMContentLoaded", function () {
-//     const tableBody = document.querySelector("#filteredContent tbody");
-//     const sortButtons = document.querySelectorAll("[data-sort]");
-
-//     sortButtons.forEach((button) => {
-//       button.addEventListener("click", function () {
-//         const sortBy = this.getAttribute("data-sort");
-
-//         const rows = Array.from(tableBody.querySelectorAll("tr"));
-//         const sortedRows = rows.sort((a, b) => {
-//           const valueA = a.querySelector(`[data-sort="${sortBy}"]`).textContent.trim().toLowerCase();
-//           const valueB = b.querySelector(`[data-sort="${sortBy}"]`).textContent.trim().toLowerCase();
-//           return valueA.localeCompare(valueB);
-//         });
-//         tableBody.innerHTML = "";
-//         sortedRows.forEach((row) => {
-//           tableBody.appendChild(row);
-//         });
-//       });
-//     });
-//   });
+;
 
 function sortTable(column, tableId) {
   console.log('Sorting by column:', column);
@@ -552,5 +555,34 @@ function sortTable(column, tableId) {
   });
 }
 
+function sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,kichThuoc,ngayBatDau,ngayKetThuc){
+  (function(){
+    emailjs.init("Hqyh0rZzbl332P-vy"); // Account Public Key
+  })();
 
+  var params = {
+    tinhTrang: tinhTrang,
+    sendername: 'Trung tâm quản lý bảng quảng cáo',
+    to: email,
+    subject: 'KẾT QUẢ CẤP PHÉP QUẢNG CÁO CHO CÔNG TY',
+    replyto: 'ptudw.group.4@gmail.com',
+    diaChi: diaChi,
+    khuVuc: khuVuc,
+    tenBangQuangCao: tenBangQuangCao,
+    loaiQC: loaiQC,
+    kichThuoc: kichThuoc,
+    soLuong: soLuong,
+    ngayBatDau: ngayBatDau,
+    ngayKetThuc: ngayKetThuc,
+  };
+
+  var serviceID = "service_zx9km1o"; // Email Service ID
+  var templateID = "template_uevq8pa"; // Email Template ID
+
+  emailjs.send(serviceID, templateID, params)
+  .then( res => {
+      alert("Email sent successfully!!")
+  })
+  .catch();
+}
 

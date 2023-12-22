@@ -248,19 +248,19 @@
                             class="avatar avatar-sm me-3 border-radius-lg" alt="spotify">
                         </div>
                         <div class="my-auto">
-                          <h6 class="mb-0 text-sm">{{diaChi}}</h6>
+                          <h6 class="mb-0 text-sm font-weight-bold">{{diaChi}}</h6>
                         </div>
                       </div>
                     </td>
                     <td  style="max-width: 160px; overflow: hidden; text-overflow: ellipsis;">
-                      <span class="text-xs text-secondary mb-0">{{khuVuc}}</span>
+                      <span class="text-xs text-secondary mb-0 font-weight-bold">{{khuVuc}}</span>
                     </td>
                     <td   style="max-width: 160px; overflow: hidden; text-overflow: ellipsis;">
-                      <span class="text-xs text-secondary">{{loaiVT}}</span>
+                      <span class="text-xs text-secondary font-weight-bold">{{loaiVT}}</span>
                     </td>
                     <td  class="align-middle text-center">
                       <div class="d-flex align-items-center">
-                        <span class="me-2 text-xs text-secondary">{{hinhThuc}}</span>
+                        <span class="me-2 text-xs text-secondary font-weight-bold">{{hinhThuc}}</span>
                       </div>
                     </td>
                     <td class="align-middle text-center">
@@ -521,11 +521,7 @@
                         <div class="row mb-3 mt-3">
                           <h6><span class="ps-2">Thời điểm chỉnh sửa: </span>
                             <script>
-                              document.write(new Date().getDate());
-                              document.write('/');
-                              document.write(new Date().getMonth());
-                              document.write('/');
-                              document.write(new Date().getFullYear());
+                              
                             </script>
                           </h6>
                         </div>
@@ -817,16 +813,16 @@
                                             </div>
                                         </td>
                                         <td style="max-width: 245px; overflow: hidden; text-overflow: ellipsis;">
-                                            <span class="text-xs text-secondary mb-0">{{Place.diaChi}}, {{Place.khuVuc}}</span>
+                                            <span class="text-xs text-secondary mb-0 font-weight-bold">{{Place.diaChi}}, {{Place.khuVuc}}</span>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-xs text-secondary">{{adSize}}</span>
+                                            <span class="text-xs text-secondary font-weight-bold">{{adSize}}</span>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="me-2 text-xs text-secondary">{{adQuantity}}</span>
+                                            <span class="me-2 text-xs text-secondary font-weight-bold">{{adQuantity}}</span>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-xs text-secondary">{{formattedExpireDay}}</span>
+                                            <span class="text-xs text-secondary font-weight-bold">{{formattedExpireDay}}</span>
                                         </td>
                                         <td class="align-middle text-center">
                                             <i role="button" class="fa fa-pen-to-square text-info me-3" data-bs-toggle="modal"
