@@ -684,7 +684,8 @@ function sendEmailReport(email,tenNguoiBaoCao,hinhThucBaoCao,phone,cachThucXuLy,
     phone:phone,
     cachThucXuLy:cachThucXuLy,
     noiDungBaoCao:noiDungBaoCao,
-    diaDiem:diaDiem
+    diaDiem:diaDiem,
+    email:email,
 
   };
 
