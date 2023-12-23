@@ -71,7 +71,8 @@
                       Hình thức báo cáo</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">
                       Tình trạng</th>
-                    <th></th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">
+                      Tùy chọn</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -106,13 +107,20 @@
                         {{/if}}</span>
                     </td>
                     <td class="align-middle" style="white-space : normal; ">
-                      <i role="button" class="fa fa-pen-to-square text-info me-3" data-bs-toggle="modal"
+                      <i role="button" class="fa fa-pen-to-square text-info ms-7" data-bs-toggle="modal"
                         data-bs-target="#handleMethod" onclick="showHandleMethod(this)" data-id="{{id}}"
                         data-reportername="{{reportername}}" data-typeofreport="{{typeofreport}}"
                         data-reporterphonenumber="{{reporterphonenumber}}" data-reporteremail="{{reporteremail}}"
-                        data-reportcontent="{{{reportername}}}" data-handlemethod="{{handlemethod}}"
+                        data-reportcontent="{{{reportcontent}}}" data-handlemethod="{{handlemethod}}"
                         data-reportlocation="{{reportlocation}}" data-imagepath1="{{imagepath1}} "
                         data-imagepath2="{{imagepath2}}"></i>
+
+                         <i role="button" class="bi bi-envelope-arrow-up-fill text-info ms-3 email-report-btn" data-id="{{id}}"
+                        data-reportername="{{reportername}}" data-typeofreport="{{typeofreport}}"
+                        data-reporterphonenumber="{{reporterphonenumber}}" data-reporteremail="{{reporteremail}}"
+                        data-reportcontent="{{{reportcontent}}}" data-handlemethod="{{handlemethod}}"
+                        data-reportlocation="{{reportlocation}}"></i>
+
                       <!-- modal -->
                       <div class="modal fade" id="handleMethod" data-bs-backdrop="static" data-bs-keyboard="false"
                         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

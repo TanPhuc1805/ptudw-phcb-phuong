@@ -86,6 +86,38 @@ document.querySelectorAll(".delete-request-btn").forEach((btnConfirm) => {
   });
 });
 
+document.querySelectorAll(".email-report-btn").forEach((btnConfirm) => {
+  btnConfirm.addEventListener("click", (e) => {
+    let tenNguoiBaoCao=e.target.dataset.reportername;
+    let hinhThucBaoCao = e.target.dataset.typeofreport;
+    let phone = e.target.dataset.reporterphonenumber;
+    let email = e.target.dataset.reporteremail;
+    let cachThucXuLy = e.target.dataset.handlemethod;
+    let noiDungBaoCao = e.target.dataset.reportcontent;
+    let diaDiem=e.target.dataset.reportlocation;
+    console.log(email);
+
+    const options = {
+      title: `Gửi email`,
+      type: "info",
+      btnOkText: "Gửi",
+      btnCancelText: "Thoát",
+      onConfirm: () => {
+        console.log("Confirm");
+        sendEmailReport(email,tenNguoiBaoCao,hinhThucBaoCao,phone,cachThucXuLy,noiDungBaoCao,diaDiem);
+      },
+      onCancel: () => {
+        console.log("Cancel");
+      },
+    };
+    const {
+      el,
+      content,
+      options: confirmedOptions,
+    } = bs5dialog.confirm(`Bạn có muốn gửi kết quả đến email: ${email} `, options);
+  });
+});
+
 document.querySelectorAll(".email-request-btn").forEach((btnConfirm) => {
   btnConfirm.addEventListener("click", (e) => {
     let email=e.target.dataset.email;
@@ -635,3 +667,34 @@ async function editReport(e) {
   location.reload();
 }
 
+
+
+function sendEmailReport(email,tenNguoiBaoCao,hinhThucBaoCao,phone,cachThucXuLy,noiDungBaoCao,diaDiem){
+  (function(){
+    emailjs.init("Hqyh0rZzbl332P-vy"); // Account Public Key
+  })();
+
+  var params = {
+    sendername: 'Trung tâm quản lý bảng quảng cáo',
+    to: email,
+    subject: 'KẾT QUẢ BÁO CÁO',
+    replyto: 'ptudw.group.4@gmail.com',
+    tenNguoiBaoCao:tenNguoiBaoCao,
+    hinhThucBaoCao:hinhThucBaoCao,
+    phone:phone,
+    cachThucXuLy:cachThucXuLy,
+    noiDungBaoCao:noiDungBaoCao,
+    diaDiem:diaDiem
+
+  };
+
+
+  var serviceID = "service_zx9km1o"; // Email Service ID
+  var templateID = "template_yyokl68"; // Email Template ID
+
+  emailjs.send(serviceID, templateID, params)
+  .then( res => {
+      alert("Email sent successfully!!")
+  })
+  .catch();
+}
