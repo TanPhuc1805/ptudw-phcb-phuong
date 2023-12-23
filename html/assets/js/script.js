@@ -584,3 +584,54 @@ function sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,
   .catch();
 }
 
+function showHandleMethod(btn) {
+  document.querySelector("#idReport").value = btn.dataset.id;
+  document.querySelector("#reportername").value = btn.dataset.reportername;
+  document.querySelector("#reporterphonenumber").value = btn.dataset.reporterphonenumber;
+  document.querySelector("#reporteremail").value = btn.dataset.reporteremail;
+  document.querySelector("#typeofreport").value = btn.dataset.typeofreport;
+  document.querySelector("#reportcontent").value = btn.dataset.reportcontent;
+  document.querySelector("#handlemethod").value = btn.dataset.handlemethod;
+  document.querySelector('#imagepath1').src = btn.dataset.imagepath1;
+  document.querySelector('#imagepath2').src = btn.dataset.imagepath2;
+
+  var reportcontentInput = document.querySelector("#handlemethod");
+  var xulybutton = document.querySelector("#xuly");
+
+  if (btn.dataset.handlemethod.trim() === '') {
+    reportcontentInput.removeAttribute('disabled');
+  } else {
+    reportcontentInput.setAttribute('disabled', 'disabled');
+  }
+
+  if (btn.dataset.handlemethod){
+    document.querySelector('.status :nth-child(1) .span-content').textContent =  "Đã xử lý";
+    document.querySelector('.status :nth-child(1) .span-content').style.color = "green";
+    xulybutton.setAttribute('disabled', 'disabled');
+  }
+  else {
+    document.querySelector('.status :nth-child(1) .span-content').textContent =  "Đang xử lý";
+    document.querySelector('.status :nth-child(1) .span-content').style.color = "red";
+    xulybutton.removeAttribute('disabled');
+  }
+  document.querySelector('.reportlocation').textContent =  btn.dataset.reportlocation;
+}
+
+async function editReport(e) {
+  console.log("ok");
+  e.preventDefault();
+
+  const formData = new FormData(document.getElementById("handleMethodForm"));
+  const data = Object.fromEntries(formData.entries());
+
+  let res = await fetch('/reports/handle-report', {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  location.reload();
+}
+

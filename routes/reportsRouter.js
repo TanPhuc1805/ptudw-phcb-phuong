@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const controller=require("../controllers/reportsController");
+const controller = require("../controllers/reportsController");
 
-//router.post("/request", controller.addRequest);
-router.get("/",controller.show);
+router.get("/", controller.show);
+router.put("/handle-report", controller.handleReport);
 
-module.exports=router;
+
+
+module.exports = router;
