@@ -102,6 +102,9 @@ controller.show= async (req,res)=>{
           "longitude",
           "latitude"
         ],
+        where:{
+          khuVuc:"Phường 4, Quận 5"
+        }
       }],
         attributes: [
             "id",
@@ -118,29 +121,8 @@ controller.show= async (req,res)=>{
             "tinhTrang"
         ],
         order: [["createdAt", "DESC"]],
-        // where:{
-        //   khuVuc:"Phường 4, Quận 5"
-        // }
       });
     
-      res.locals.places = await models.Place.findAll({
-    
-    attributes: [
-      "id",
-      "diaChi",
-      "khuVuc",
-      "loaiVT",
-      "hinhThuc",
-      "quyHoach",
-      "hinhAnh",
-      "longitude",
-      "latitude"
-    ],
-    order: [["diaChi", "ASC"]],
-    where:{
-      khuVuc:"Phường 4, Quận 5"
-    }
-  });
       res.render("requests");
 };
 

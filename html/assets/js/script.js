@@ -413,8 +413,6 @@ function openViewPlaceDetail(elm, diaChi, khuVuc, loaiVT, hinhThuc, quyHoach, hi
   ancElm.querySelector('.detail-card :nth-child(4) .span-content').textContent = hinhThuc;
   ancElm.querySelector('.detail-card :nth-child(5) .span-content').textContent = quyHoach;
 
-
-
   if (hinhAnh) ancElm.querySelector('img').src = hinhAnh;
 
 }
