@@ -474,16 +474,14 @@ function openViewRequestDetail(elm,congTy,
   let ancElm = elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal');
   ancElm.classList.add('show');
   elm.parentElement.parentElement.parentElement.parentElement.querySelector('.modal.detail-request').style.display = "block";
-  ancElm.querySelector('#tinhTrang').textContent=tinhTrang;
-  if (tinhTrang="Chờ phê duyệt") {
-    ancElm.querySelector('#tinhTrang').classList.add('text-warning');
-  }
-  else if (tinhTrang="Đã phê duyệt") {
-    ancElm.querySelector('#tinhTrang').classList.add('text-success');
-  }
-  else if (tinhTrang="Không phê duyệt") {
-    ancElm.querySelector('#tinhTrang').classList.add('text-danger');
-  }
+  ancElm.querySelector('.tinhTrangRequest').textContent=tinhTrang;
+  // if (tinhTrang="Chờ phê duyệt") {
+  //   ancElm.querySelector('.tinhTrangRequest').classList.add('text-warning');
+  // } if (tinhTrang="Đã phê duyệt") {
+  //   ancElm.querySelector('.tinhTrangRequest').classList.add('text-success');
+  // } else if (tinhTrang="Không phê duyệt") {
+  //   ancElm.querySelector('.tinhTrangRequest').classList.add('text-danger');
+  // }
   ancElm.querySelector('.detail-card-part-1 :nth-child(1) .span-content').textContent=congTy;
   ancElm.querySelector('.detail-card-part-1 :nth-child(2) .span-content').textContent=diaChiCongTy;
   ancElm.querySelector('.detail-card-part-1 :nth-child(3) .span-content').textContent=dienThoai;
@@ -618,15 +616,15 @@ function sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,
 
 function showHandleMethod(btn) {
   document.querySelector("#idReport").value = btn.dataset.id;
-  document.querySelector("#reportername").value = btn.dataset.reportername;
-  document.querySelector("#reporterphonenumber").value = btn.dataset.reporterphonenumber;
-  document.querySelector("#reporteremail").value = btn.dataset.reporteremail;
-  document.querySelector("#typeofreport").value = btn.dataset.typeofreport;
-  document.querySelector("#reportcontent").value = btn.dataset.reportcontent;
+  document.querySelector("#reportername").textContent = btn.dataset.reportername;
+  document.querySelector("#reporterphonenumber").textContent = btn.dataset.reporterphonenumber;
+  document.querySelector("#reporteremail").textContent = btn.dataset.reporteremail;
+  document.querySelector("#typeofreport").textContent = btn.dataset.typeofreport;
+  document.querySelector("#reportcontent").innerHTML  = '<span style="font-size:14px; font-wieght:bold; color:#344767;font-family: Roboto, Helvetica, Arial, sans-serif;">' + btn.dataset.reportcontent + '</>';
   document.querySelector("#handlemethod").value = btn.dataset.handlemethod;
   document.querySelector('#imagepath1').src = btn.dataset.imagepath1;
   document.querySelector('#imagepath2').src = btn.dataset.imagepath2;
-
+  document.querySelector('.reportlocation').textContent = btn.dataset.reportlocation;
   var reportcontentInput = document.querySelector("#handlemethod");
   var xulybutton = document.querySelector("#xuly");
 
@@ -636,17 +634,22 @@ function showHandleMethod(btn) {
     reportcontentInput.setAttribute('disabled', 'disabled');
   }
 
-  if (btn.dataset.handlemethod){
-    document.querySelector('.status :nth-child(1) .span-content').textContent =  "Đã xử lý";
+  if (btn.dataset.handlemethod) {
+    document.querySelector('.status :nth-child(1) .span-content').textContent = "Đã xử lý";
     document.querySelector('.status :nth-child(1) .span-content').style.color = "green";
     xulybutton.setAttribute('disabled', 'disabled');
   }
   else {
-    document.querySelector('.status :nth-child(1) .span-content').textContent =  "Đang xử lý";
+    document.querySelector('.status :nth-child(1) .span-content').textContent = "Đang xử lý";
     document.querySelector('.status :nth-child(1) .span-content').style.color = "red";
     xulybutton.removeAttribute('disabled');
   }
-  document.querySelector('.reportlocation').textContent =  btn.dataset.reportlocation;
+  // if ((btn.dataset.imagepath1 == "uploads/NULL" &&  btn.dataset.imagepath2 == "uploads/NULL")) {
+  //   document.querySelector('#hinhAnhSlide').style.display = "none";
+  // }
+  console.log(btn.dataset.imagepath1);
+  console.log(btn.dataset.imagepath2);
+
 }
 
 async function editReport(e) {
