@@ -145,7 +145,7 @@
                                   <div class="col">
                                     <div class="input">
                                         <label class="form-label">Loại bảng quảng cáo: </label>
-                                      <select name="loaiQC" id="loaiQCEditRequest" class="form-control select-form-control">
+                                      <select name="noiDungQC" id="noiDungQCEditRequest" class="form-control select-form-control">
                                         {{#each adstypes}}
                                         <option value="{{name}}" selected="selected">{{name}}</option>
                                         {{/each}}
@@ -175,7 +175,7 @@
                                     <div class="col">
                                       <div class="input">
                                         <label class="form-label">Ngày bắt đầu hợp đồng:</label>
-                                        <input type="text" class="form-control " name="ngayBatDau" id="ngayBatDauEditRequest"
+                                        <input type="text" class="form-control " placeholder="MM/DD/YYYY" name="ngayBatDau" id="ngayBatDauEditRequest" oninput="checkValidDate(this, event)"
                                           required />
                                         
                                       </div>
@@ -183,7 +183,7 @@
                                     <div class="col">
                                       <div class="input">
                                         <label class="form-label">Ngày kết thúc hợp đồng:</label>
-                                        <input type="text" class="form-control " name="ngayKetThuc" id="ngayKetThucEditRequest" required />
+                                        <input type="text" class="form-control " placeholder="MM/DD/YYYY" name="ngayKetThuc" id="ngayKetThucEditRequest" oninput="checkValidDate(this, event)" required />
                                         
                                       </div>
                                     </div>
@@ -264,7 +264,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('loaiQC', 'tableRequest')">
+                                                    <a class="dropdown-item text-center" href="javascript:;" onclick="sortTable('noiDungQC', 'tableRequest')">
                                                         <button class="btn btn-outline-info w-100" type="button"
                                                             data-target="infoToast"><i
                                                                 class="fa-solid fa-arrow-up-a-z pe-1"></i>Hình thức quảng cáo
@@ -419,7 +419,7 @@
                                   <div class="col">
                                     <div class="input">
                                         <label class="form-label">Hình thức:</label>
-                                        <select name="loaiQC" id="loaiQC" class="form-control select-form-control">
+                                        <select name="noiDungQC" id="noiDungQC" class="form-control select-form-control">
                                 {{#each adstypes}}
                                 <option value="{{name}}" selected="selected">{{name}}</option>
                                 {{/each}}
@@ -449,7 +449,7 @@
                                     <div class="col">
                                       <div class="input">
                                         <label class="form-label">Ngày bắt đầu hợp đồng:</label>
-                                        <input type="text" class="form-control " value="" id="ngayBatDau" name="ngayBatDau"
+                                        <input type="text" class="form-control " value="" id="ngayBatDau" name="ngayBatDau" placeholder="MM/DD/YYYY"
                                           required />
                                         
                                       </div>
@@ -457,7 +457,7 @@
                                     <div class="col">
                                       <div class="input">
                                         <label class="form-label">Ngày kết thúc hợp đồng:</label>
-                                        <input type="text" class="form-control " value="" id="ngayKetThuc" name="ngayKetThuc" required />
+                                        <input type="text" class="form-control " value="" id="ngayKetThuc" name="ngayKetThuc" placeholder="MM/DD/YYYY" required />
                                         
                                       </div>
                                     </div>
@@ -650,18 +650,12 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-6">
-                                                                            <div class="card bg-dark text-white">
-                                                                                <img src="../assets/img/stt19.png"
-                                                                                    class="card-img" alt="..."
-                                                                                    style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;">
-                                                                                <div class="card-img-overlay">
-                                                                                    <h5 class="card-title text-white" id="img-title">
-                                                                                    </h5>
-                                                                                    
-                                                                                    
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                            <h6>Phần 4: Hình ảnh</h6>
+                            <div class="card bg-dark text-white">
+                              <img id="hinhAnhRequest" class="card-img" alt="Không có ảnh"
+                                style="height: 198px; box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;  object-fit: cover;">
+                            </div>
+                          </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -697,8 +691,8 @@
                                     <tbody>
                                         {{#each requests}}
                                         <tr data-phuong="{{Place.khuVuc}}" data-diaChi="{{Place.diaChi}}" data-congTy="{{congTy}}"
-                    data-loaiQC="{{loaiQC}}" data-tinhTrang="{{tinhTrang}}">
-                                            <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{Place.diaChi}}','{{Place.khuVuc}}','{{Place.loaiVT}}','{{Place.longitude}}','{{Place.latitude}}','{{tenBangQuangCao}}','{{loaiQC}}','{{kichThuoc}}','{{soLuong}}','{{ngayBatDau}}','{{ngayKetThuc}}','{{tinhTrang}}')">
+                    data-noiDungQC="{{noiDungQC}}" data-tinhTrang="{{tinhTrang}}">
+                                            <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{Place.diaChi}}','{{Place.khuVuc}}','{{Place.loaiVT}}','{{Place.longitude}}','{{Place.latitude}}','{{tenBangQuangCao}}','{{noiDungQC}}','{{kichThuoc}}','{{soLuong}}','{{formattedNgayBatDau}}','{{formattedNgayKetThuc}}','{{tinhTrang}}')">
                                                 <div class="d-flex px-2">
                                                     <div>
                                                         <img src="../assets/img/city.jpeg"
@@ -714,7 +708,7 @@
                                                 <p class="text-sm font-weight-bold mb-0">{{congTy}}</p>
                                             </td>
                                             <td>
-                                                <span class="text-xs font-weight-bold">{{loaiQC}}</span>
+                                                <span class="text-xs font-weight-bold">{{noiDungQC}}</span>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <div class="d-flex align-items-center">
@@ -731,11 +725,11 @@ data-dia-chi="{{Place.diaChi}}" data-khu-vuc="{{Place.khuVuc}}"
     data-longitude="{{Place.longitude}}"
     data-latitude="{{Place.latitude}}"
     data-ten-bang-quang-cao="{{tenBangQuangCao}}"
-    data-loai-q-c="{{loaiQC}}"
+    data-noi-dung-q-c="{{noiDungQC}}"
     data-kich-thuoc="{{kichThuoc}}"
     data-so-luong="{{soLuong}}"
-    data-ngay-bat-dau="{{ngayBatDau}}"
-    data-ngay-ket-thuc="{{ngayKetThuc}}"></i>
+    data-ngay-bat-dau="{{formattedNgayBatDau}}"
+    data-ngay-ket-thuc="{{formattedNgayKetThuc}}"></i>
                                                 <i role="button" class="fa fa-trash text-danger delete-btn delete-request-btn me-3" data-id={{id}}></i>
                                                 <i role="button" class="bi bi-envelope-arrow-up-fill text-info email-request-btn" data-id="{{id}}"
                                                 data-cong-ty="{{congTy}}" data-dia-chi-cong-ty="{{diaChiCongTy}}" data-dien-thoai="{{dienThoai}}" data-email="{{email}}"
@@ -744,11 +738,11 @@ data-dia-chi="{{Place.diaChi}}" data-khu-vuc="{{Place.khuVuc}}"
     data-longitude="{{Place.longitude}}"
     data-latitude="{{Place.latitude}}"
     data-ten-bang-quang-cao="{{tenBangQuangCao}}"
-    data-loai-q-c="{{loaiQC}}"
+    data-noi-dung-q-c="{{noiDungQC}}"
     data-kich-thuoc="{{kichThuoc}}"
     data-so-luong="{{soLuong}}"
-    data-ngay-bat-dau="{{ngayBatDau}}"
-    data-ngay-ket-thuc="{{ngayKetThuc}}"
+    data-ngay-bat-dau="{{formattedNgayBatDau}}"
+    data-ngay-ket-thuc="{{formattedNgayKetThuc}}"
     data-tinh-trang="{{tinhTrang}}"></i>
                                                 
                                                 

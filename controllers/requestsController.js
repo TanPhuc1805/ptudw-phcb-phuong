@@ -1,5 +1,7 @@
 const controller={};
+const { Op } = require('sequelize');
 const models = require("../models");
+const moment = require('moment');
 
 controller.deleteRequest=async(req,res)=>{
   let id = isNaN(req.params.id) ? 0 : parseInt(req.params.id);
@@ -27,14 +29,31 @@ controller.addRequest = async (req, res) => {
     email,
     diaChiRequest,
     tenBangQuangCao,
-    loaiQC,
+    noiDungQC,
     kichThuoc,
     soLuong,
     ngayBatDau,
-    ngayKetThuc
+    ngayKetThuc,
+    hinhAnh
   } = req.body;
   console.log(req.body);
 
+  const ngayBatDauDate = moment(ngayBatDau, 'MM/DD/YYYY', true);
+  const ngayKetThucDate = moment(ngayKetThuc, 'MM/DD/YYYY', true);
+
+  const isValidDateBD = ngayBatDauDate.isValid();
+  const isValidDateKT = ngayKetThucDate.isValid();
+
+  if (!isValidDateBD) {
+    return res.json({ error: true, message: 'Ngày Bắt Đầu không hợp lệ!' });
+  }
+  if (!isValidDateKT) {
+    return res.json({ error: true, message: 'Ngày Kết Thúc không hợp lệ!' });
+  }
+  if (ngayBatDauDate.isAfter(ngayKetThucDate)) {
+    return res.json({ error: true, message: 'Ngày Bắt Đầu không thể sau Ngày Kết Thúc!' });
+  }
+  
   const requestPlace = await models.Place.findOne({ 
     attributes: ["id"],
     where: {diaChi: diaChiRequest} 
@@ -50,12 +69,13 @@ controller.addRequest = async (req, res) => {
       email,
       placeId:placeId,
       tenBangQuangCao,
-      loaiQC,
+      noiDungQC,
       kichThuoc,
       soLuong,
       ngayBatDau,
       ngayKetThuc,
-      tinhTrang: 'Chờ phê duyệt'
+      tinhTrang: 'Chờ phê duyệt',
+      hinhAnh
     });
     res.redirect('/requests');
   } catch (error) {
@@ -113,17 +133,23 @@ controller.show= async (req,res)=>{
             "dienThoai",
             "email",
             "tenBangQuangCao",
-            "loaiQC",
+            "noiDungQC",
             "kichThuoc",
             "soLuong",
             "ngayBatDau",
             "ngayKetThuc",
-            "tinhTrang"
+            "tinhTrang",
+            "hinhAnh"
         ],
         order: [["createdAt", "DESC"]],
       });
     
-      res.render("requests");
+      res.render("requests",{
+        requests: res.locals.requests.map(detail => ({...detail.toJSON(),
+          formattedNgayBatDau: moment(detail.ngayBatDau).format('MM/DD/YYYY'),
+          formattedNgayKetThuc: moment(detail.ngayKetThuc).format('MM/DD/YYYY'),
+        })), 
+      });
 };
 
 controller.editRequest = async (req, res) => {
@@ -134,12 +160,31 @@ controller.editRequest = async (req, res) => {
     email,
     diaChiRequest,
     tenBangQuangCao,
-    loaiQC,
+    noiDungQC,
     kichThuoc,
     soLuong,
     ngayBatDau,
     ngayKetThuc,
-    tinhTrang} = req.body;
+    tinhTrang,
+    hinhAnh} = req.body;
+
+    const ngayBatDauDate = moment(ngayBatDau, 'MM/DD/YYYY', true);
+    const ngayKetThucDate = moment(ngayKetThuc, 'MM/DD/YYYY', true);
+  
+    const isValidDateBD = ngayBatDauDate.isValid();
+    const isValidDateKT = ngayKetThucDate.isValid();
+
+    if (!isValidDateBD) {
+      return res.json({ error: true, message: 'Ngày Bắt Đầu không hợp lệ!' });
+    }
+  
+    if (!isValidDateKT) {
+      return res.json({ error: true, message: 'Ngày Kết Thúc không hợp lệ!' });
+    }
+    
+    if (ngayBatDauDate.isAfter(ngayKetThucDate)) {
+      return res.json({ error: true, message: 'Ngày Bắt Đầu không thể sau Ngày Kết Thúc!' });
+    }
   
     const requestPlace = await models.Place.findOne({ 
       attributes: ["id"],
@@ -155,12 +200,13 @@ controller.editRequest = async (req, res) => {
         email,
         placeId:placeId,
         tenBangQuangCao,
-        loaiQC,
+        noiDungQC,
         kichThuoc,
         soLuong,
         ngayBatDau,
         ngayKetThuc,
-        tinhTrang
+        tinhTrang,
+        hinhAnh
       },
       {where: {id}}
     );

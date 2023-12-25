@@ -125,7 +125,7 @@ document.querySelectorAll(".email-request-btn").forEach((btnConfirm) => {
     let diaChi = e.target.dataset.diaChi;
     let khuVuc = e.target.dataset.khuVuc;
     let tenBangQuangCao = e.target.dataset.tenBangQuangCao;
-    let loaiQC = e.target.dataset.loaiQC;
+    let noiDungQC = e.target.dataset.noiDungQC;
     let kichThuoc=e.target.dataset.kichThuoc;
     let soLuong = e.target.dataset.soLuong;
     let ngayBatDau = e.target.dataset.ngayBatDau;
@@ -139,7 +139,7 @@ document.querySelectorAll(".email-request-btn").forEach((btnConfirm) => {
       btnCancelText: "Thoát",
       onConfirm: () => {
         console.log("Confirm");
-        sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,kichThuoc,ngayBatDau,ngayKetThuc);
+        sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,noiDungQC,soLuong,kichThuoc,ngayBatDau,ngayKetThuc);
       },
       onCancel: () => {
         console.log("Cancel");
@@ -384,7 +384,7 @@ function showEditRequestModal(btn) {
   document.querySelector("#diaChiEditRequest").value = btn.dataset.diaChi;
   
   document.querySelector("#tenBangQuangCaoEditRequest").value = btn.dataset.tenBangQuangCao;
-  document.querySelector("#loaiQCEditRequest").value = btn.dataset.loaiQC;
+  document.querySelector("#noiDungQCEditRequest").value = btn.dataset.noiDungQC;
   document.querySelector("#kichThuocEditRequest").value = btn.dataset.kichThuoc;
   document.querySelector("#soLuongEditRequest").value = btn.dataset.soLuong;
   document.querySelector("#ngayBatDauEditRequest").value = btn.dataset.ngayBatDau;
@@ -461,7 +461,7 @@ function openViewRequestDetail(elm,congTy,
   longitude,
   latitude,
   tenBangQuangCao,
-  loaiQC,
+  noiDungQC,
   kichThuoc,
   soLuong,
   ngayBatDau,
@@ -492,7 +492,7 @@ function openViewRequestDetail(elm,congTy,
   ancElm.querySelector('.detail-card-part-2 :nth-child(3) .span-content').textContent=loaiVT;
   ancElm.querySelector('.detail-card-part-2 :nth-child(4) .span-content').textContent="("+longitude+" , "+latitude+")";
 
-  ancElm.querySelector('.detail-card-part-3 :nth-child(1) .span-content').textContent=loaiQC;
+  ancElm.querySelector('.detail-card-part-3 :nth-child(1) .span-content').textContent=noiDungQC;
   ancElm.querySelector('.detail-card-part-3 :nth-child(2) .span-content').textContent=tenBangQuangCao;
   ancElm.querySelector('.detail-card-part-3 :nth-child(3) .span-content').textContent=kichThuoc;
   ancElm.querySelector('.detail-card-part-3 :nth-child(4) .span-content').textContent=soLuong;
@@ -550,6 +550,19 @@ document.getElementById('phuongDropdown').addEventListener('change', function ()
 });
 ;
 
+function checkValidDate(elm, event) {
+  event.preventDefault();
+
+  const inputDate = elm.value;
+  const isValidDate = moment(inputDate, 'MM/DD/YYYY', true).isValid();
+
+  if (!isValidDate) {
+    elm.setCustomValidity('Ngày không hợp lệ');
+  } else {
+    elm.setCustomValidity('');
+  }
+}
+
 function sortTable(column, tableId) {
   console.log('Sorting by column:', column);
 
@@ -583,7 +596,7 @@ function sortTable(column, tableId) {
   });
 }
 
-function sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,kichThuoc,ngayBatDau,ngayKetThuc){
+function sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,noiDungQC,soLuong,kichThuoc,ngayBatDau,ngayKetThuc){
   (function(){
     emailjs.init("Hqyh0rZzbl332P-vy"); // Account Public Key
   })();
@@ -597,7 +610,7 @@ function sendEmail(email,tinhTrang,diaChi,khuVuc,tenBangQuangCao,loaiQC,soLuong,
     diaChi: diaChi,
     khuVuc: khuVuc,
     tenBangQuangCao: tenBangQuangCao,
-    loaiQC: loaiQC,
+    noiDungQC: noiDungQC,
     kichThuoc: kichThuoc,
     soLuong: soLuong,
     ngayBatDau: ngayBatDau,
