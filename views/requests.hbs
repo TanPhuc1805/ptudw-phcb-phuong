@@ -8,7 +8,7 @@
                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelfixads"
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
-                        <form action="" id ="editRequestForm" onsubmit="editRequest(event)">
+                        <form action="" id ="editRequestForm" onsubmit="editRequest(event)" enctype="multipart/form-data">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="col-6 px-2"><h5 class="modal-title text-primary" id="staticBackdropLabel">CHỈNH SỬA YÊU CẦU QUẢNG CÁO </h5></div>    
@@ -197,15 +197,15 @@
                               <div class="profile-pic">
                                 <div class="image-container">
                                   <img
-                                    src="../assets/img/stt19.png"
-                                    id="output" width="100%" height="250px"
+                                    src=""
+                                    id="editRequestImg" width="100%" height="250px"
                                     style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; object-fit: cover; position: relative; border-radius:5px;"
                                   />
-                                  <label class="btn btn-primary" for="file" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
+                                  <label class="btn btn-primary" for="requestAdsImg" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
                                     <span class="glyphicon glyphicon-camera"></span>
                                     <span>Đổi hình ảnh</span>
                                   </label>
-                                  <input id="file" type="file" style="display: none;" onchange="loadFile(event)" />
+                                  <input id="requestAdsImg" name="ImageUrl" type="file" style="display: none;" onchange="loadImg(event,'#editRequestImg')" />
                                 </div>
                               </div>
                             </div>
@@ -290,7 +290,7 @@
                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabeladd"
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
-                        <form action="requests/request" id="addRequestForm" method="POST">
+                        <form action="requests/request" id="addRequestForm" method="POST" enctype="multipart/form-data">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="col-6 px-2"><h5 class="modal-title text-primary" id="staticBackdropLabel">TẠO YÊU CẦU QUẢNG CÁO </h5></div>    
@@ -472,14 +472,14 @@
                                 <div class="image-container">
                                   <img
                                     src=""
-                                    id="output" width="100%" height="250px"
+                                    id="addRequestImg" width="100%" height="250px"
                                     style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; object-fit: cover; position: relative; border-radius:5px;"
                                   />
-                                  <label class="btn btn-primary" for="file" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
+                                  <label class="btn btn-primary" for="addImgRequest" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
                                     <span class="glyphicon glyphicon-camera"></span>
                                     <span>Đổi hình ảnh</span>
                                   </label>
-                                  <input id="file" type="file" style="display: none;" onchange="loadFile(event)" />
+                                  <input id="addImgRequest" type="file" name="ImageUrl" style="display: none;" onchange="loadImg(event,'#addRequestImg')" />
                                 </div>
                               </div>
                             </div>
@@ -692,10 +692,10 @@
                                         {{#each requests}}
                                         <tr data-phuong="{{Place.khuVuc}}" data-diaChi="{{Place.diaChi}}" data-congTy="{{congTy}}"
                     data-noiDungQC="{{noiDungQC}}" data-tinhTrang="{{tinhTrang}}">
-                                            <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{Place.diaChi}}','{{Place.khuVuc}}','{{Place.loaiVT}}','{{Place.longitude}}','{{Place.latitude}}','{{tenBangQuangCao}}','{{noiDungQC}}','{{kichThuoc}}','{{soLuong}}','{{formattedNgayBatDau}}','{{formattedNgayKetThuc}}','{{tinhTrang}}')">
+                                            <td onclick="openViewRequestDetail(this,'{{congTy}}','{{diaChiCongTy}}','{{dienThoai}}','{{email}}','{{Place.diaChi}}','{{Place.khuVuc}}','{{Place.loaiVT}}','{{Place.longitude}}','{{Place.latitude}}','{{tenBangQuangCao}}','{{noiDungQC}}','{{kichThuoc}}','{{soLuong}}','{{formattedNgayBatDau}}','{{formattedNgayKetThuc}}','{{tinhTrang}}','{{hinhAnh}}')">
                                                 <div class="d-flex px-2">
                                                     <div>
-                                                        <img src="../assets/img/city.jpeg"
+                                                        <img src="{{hinhAnh}}"
                                                             class="avatar avatar-sm me-3 border-radius-lg"
                                                             alt="spotify">
                                                     </div>
@@ -729,8 +729,9 @@ data-dia-chi="{{Place.diaChi}}" data-khu-vuc="{{Place.khuVuc}}"
     data-kich-thuoc="{{kichThuoc}}"
     data-so-luong="{{soLuong}}"
     data-ngay-bat-dau="{{formattedNgayBatDau}}"
-    data-ngay-ket-thuc="{{formattedNgayKetThuc}}"></i>
-                                                <i role="button" class="fa fa-trash text-danger delete-btn delete-request-btn me-3" data-id={{id}}></i>
+    data-ngay-ket-thuc="{{formattedNgayKetThuc}}"
+     data-hinh-anh-id="{{hinhAnhId}}" data-hinh-anh="{{hinhAnh}}"></i>
+                                                <i role="button" class="fa fa-trash text-danger delete-btn delete-request-btn me-3" data-id={{id}} data-hinh-anh-id={{hinhAnhId}}></i>
                                                 <i role="button" class="bi bi-envelope-arrow-up-fill text-info email-request-btn" data-id="{{id}}"
                                                 data-cong-ty="{{congTy}}" data-dia-chi-cong-ty="{{diaChiCongTy}}" data-dien-thoai="{{dienThoai}}" data-email="{{email}}"
 data-dia-chi="{{Place.diaChi}}" data-khu-vuc="{{Place.khuVuc}}"
@@ -743,7 +744,8 @@ data-dia-chi="{{Place.diaChi}}" data-khu-vuc="{{Place.khuVuc}}"
     data-so-luong="{{soLuong}}"
     data-ngay-bat-dau="{{formattedNgayBatDau}}"
     data-ngay-ket-thuc="{{formattedNgayKetThuc}}"
-    data-tinh-trang="{{tinhTrang}}"></i>
+    data-tinh-trang="{{tinhTrang}}"
+    data-hinh-anh-id="{{hinhAnhId}}" data-hinh-anh="{{hinhAnh}}"></i>
                                                 
                                                 
                                                 

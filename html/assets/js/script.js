@@ -111,46 +111,6 @@ if (editPlaceEle) {
   });
 }
 
-// Hàm khởi tạo giá trị và trạng thái của form khi mở modal
-function initializeEditForm() {
-  let saveBtn = document.querySelector("#addPlaceForm button[type='submit']");
-  saveBtn.disabled = true;
-
-  // Lưu giá trị hiện tại của các ô input
-  let currentValues = {
-    diaChi: document.querySelector("#diaChiEdit").value,
-    khuVuc: document.querySelector("#khuVucEdit").value,
-    loaiVT: document.querySelector("#loaiVTEdit").value,
-    hinhThuc: document.querySelector("#hinhThucEdit").value,
-    quyHoach: document.querySelector("#quyHoachEdit").checked,
-  };
-
-  // Sự kiện input cho các ô input
-  document.querySelectorAll("#addPlaceForm input").forEach((input) => {
-    input.addEventListener("input", () => {
-      checkFormChanges(currentValues);
-    });
-  });
-}
-
-// Hàm kiểm tra sự thay đổi và cập nhật trạng thái của nút "Lưu"
-function checkFormChanges(currentValues) {
-  let saveBtn = document.querySelector("#addPlaceForm button[type='submit']");
-  let isFormChanged = false;
-
-  // So sánh giá trị hiện tại với giá trị ban đầu
-  if (currentValues.diaChi !== document.querySelector("#diaChiEdit").value ||
-      currentValues.khuVuc !== document.querySelector("#khuVucEdit").value ||
-      currentValues.loaiVT !== document.querySelector("#loaiVTEdit").value ||
-      currentValues.hinhThuc !== document.querySelector("#hinhThucEdit").value ||
-      currentValues.quyHoach !== document.querySelector("#quyHoachEdit").checked) {
-    isFormChanged = true;
-  }
-
-  // Cập nhật trạng thái của nút "Lưu"
-  saveBtn.disabled = !isFormChanged;
-}
-
 function openViewAdsDetail(elm, adName, diaChi, khuVuc, adSize, adQuantity, expireDay, imagePath) {
   let div = document.createElement('div');
   div.classList.add('modal-backdrop', 'fade', 'show');
@@ -176,7 +136,7 @@ function showEditPlaceModal(btn) {
   document.querySelector("#loaiVTEdit").value = btn.dataset.loaiVt;
   document.querySelector("#hinhThucEdit").value = btn.dataset.hinhThuc;
   document.querySelector("#quyHoachEdit").checked = btn.dataset.quyHoach == "ĐÃ QUY HOẠCH" ? true : false;
-  initializeEditForm();
+  document.querySelector("#PlaceImageEdit").src=btn.dataset.imagePath;
 }
 
 function showEditRequestModal(btn) {
@@ -193,6 +153,7 @@ function showEditRequestModal(btn) {
   document.querySelector("#soLuongEditRequest").value = btn.dataset.soLuong;
   document.querySelector("#ngayBatDauEditRequest").value = btn.dataset.ngayBatDau;
   document.querySelector("#ngayKetThucEditRequest").value = btn.dataset.ngayKetThuc;
+  document.querySelector('#editRequestImg').src=btn.dataset.hinhAnh;
 }
 
 function showEditAdsModal(btn) {
@@ -202,6 +163,7 @@ function showEditAdsModal(btn) {
   document.querySelector("#adSizeEdit").value = btn.dataset.adSize;
   document.querySelector("#adQuantityEdit").value = btn.dataset.adQuantity;
   document.querySelector("#expireDayEdit").value = btn.dataset.expireDay;
+  document.querySelector("#AdsImageEdit").src=btn.dataset.imagePath;
 }
 
 async function editRequest(e) {
@@ -212,7 +174,7 @@ async function editRequest(e) {
   const data = Object.fromEntries(formData.entries());
   
 
-  let res = await fetch(`/requests/request`, {
+  let res = await fetch(`/requests/editRequest`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -220,7 +182,8 @@ async function editRequest(e) {
     body: JSON.stringify(data),
     
   });
-
+  
+  console.log(data);
   location.reload();
 }
 
@@ -270,7 +233,7 @@ function openViewRequestDetail(elm,congTy,
   soLuong,
   ngayBatDau,
   ngayKetThuc,
-  tinhTrang) {
+  tinhTrang,hinhAnh) {
   let div = document.createElement('div');
   div.classList.add('modal-backdrop', 'fade', 'show');
   document.body.appendChild(div);
@@ -303,7 +266,7 @@ function openViewRequestDetail(elm,congTy,
   ancElm.querySelector('.detail-card-part-3 :nth-child(5) .span-content').textContent=ngayBatDau;
   ancElm.querySelector('.detail-card-part-3 :nth-child(6) .span-content').textContent=ngayKetThuc;
 
-  ancElm.querySelector('#img-title').textContent=diaChi;
+  ancElm.querySelector('#hinhAnhRequest').src=hinhAnh;
 
 }
 function closeViewRequestDetail(elm) {

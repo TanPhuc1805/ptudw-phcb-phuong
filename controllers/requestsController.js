@@ -1,14 +1,16 @@
 const controller={};
-const { Op } = require('sequelize');
 const models = require("../models");
 const moment = require('moment');
+const cloudinary=require('../middlewares/cloudinary');
 
 controller.deleteRequest=async(req,res)=>{
   let id = isNaN(req.params.id) ? 0 : parseInt(req.params.id);
+  let hinhAnhId = req.params.hinhAnhId;
   try {
     await models.Requestads.destroy(
       {where: {id}}
     );
+    await cloudinary.uploader.destroy(hinhAnhId);
     res.send("Đã xoá yêu cầu!");
   } catch (error) {
     res.send("Không thể xoá yêu cầu!");
@@ -17,11 +19,6 @@ controller.deleteRequest=async(req,res)=>{
 }
 
 controller.addRequest = async (req, res) => {
-  if (!req.body || typeof req.body !== 'object') {
-    res.send('Invalid request body');
-    return;
-  }
-
   const {
     congTy,
     diaChiCongTy,
@@ -34,7 +31,6 @@ controller.addRequest = async (req, res) => {
     soLuong,
     ngayBatDau,
     ngayKetThuc,
-    hinhAnh
   } = req.body;
   console.log(req.body);
 
@@ -59,9 +55,11 @@ controller.addRequest = async (req, res) => {
     where: {diaChi: diaChiRequest} 
   });
   let placeId = requestPlace.getDataValue("id");
-  
-
   try {
+    const result = await cloudinary.uploader.upload(req.file.path,{
+      folder:'requests'
+    });
+
     await models.Requestads.create({
       congTy,
       diaChiCongTy,
@@ -75,7 +73,8 @@ controller.addRequest = async (req, res) => {
       ngayBatDau,
       ngayKetThuc,
       tinhTrang: 'Chờ phê duyệt',
-      hinhAnh
+      hinhAnh:result.secure_url,
+      hinhAnhId:result.public_id,
     });
     res.redirect('/requests');
   } catch (error) {
@@ -139,7 +138,8 @@ controller.show= async (req,res)=>{
             "ngayBatDau",
             "ngayKetThuc",
             "tinhTrang",
-            "hinhAnh"
+            "hinhAnh",
+            "hinhAnhId"
         ],
         order: [["createdAt", "DESC"]],
       });
@@ -153,6 +153,7 @@ controller.show= async (req,res)=>{
 };
 
 controller.editRequest = async (req, res) => {
+  console.log("akjds");
   let {id,
     congTy,
     diaChiCongTy,
@@ -165,8 +166,7 @@ controller.editRequest = async (req, res) => {
     soLuong,
     ngayBatDau,
     ngayKetThuc,
-    tinhTrang,
-    hinhAnh} = req.body;
+    tinhTrang} = req.body;
 
     const ngayBatDauDate = moment(ngayBatDau, 'MM/DD/YYYY', true);
     const ngayKetThucDate = moment(ngayKetThuc, 'MM/DD/YYYY', true);
@@ -191,7 +191,15 @@ controller.editRequest = async (req, res) => {
       where: {diaChi: diaChiRequest} 
     });
     let placeId = requestPlace.getDataValue("id");
+
   try {
+
+    // const result = await cloudinary.uploader.upload(req.file.path,{
+    //   folder:'requests'
+    // });
+
+    // await cloudinary.uploader.destroy(hinhAnhId);
+
     await models.Requestads.update(
       { 
         congTy,
@@ -206,7 +214,8 @@ controller.editRequest = async (req, res) => {
         ngayBatDau,
         ngayKetThuc,
         tinhTrang,
-        hinhAnh
+        // hinhAnh:result.secure_url,
+        // hinhAnhId:result.public_id,
       },
       {where: {id}}
     );

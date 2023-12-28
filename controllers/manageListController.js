@@ -2,7 +2,7 @@ const controller={};
 const models = require("../models");
 const moment = require('moment');
 const cloudinary=require('../middlewares/cloudinary');
-const upload=require('../middlewares/multer');
+
 controller.show = async (req, res) => {
   
   res.locals.adstypes = await models.Adstype.findAll({
@@ -23,6 +23,7 @@ controller.show = async (req, res) => {
       "hinhThuc",
       "quyHoach",
       "hinhAnh",
+      "hinhAnhId",
       "longitude",
       "latitude"
     ],
@@ -47,6 +48,7 @@ controller.show = async (req, res) => {
       "adQuantity",
       "expireDay",
       "imagePath",
+      "publicImageId",
     ],
     where: {
       '$Place.khuVuc$': 'Phường 4, Quận 5'
@@ -65,6 +67,11 @@ controller.show = async (req, res) => {
 controller.requestEditPlace = async (req, res) => {
   let {id, diaChi, khuVuc, loaiVT, hinhThuc, isQuyHoach, liDoChinhSua} = req.body;
   try {
+    
+      const result = await cloudinary.uploader.upload(req.file.path,{
+        folder:'places'
+      });
+
     await models.Requesteditplace.create({
       placeId: id,
       diaChi, 
@@ -72,11 +79,14 @@ controller.requestEditPlace = async (req, res) => {
       loaiVT, 
       hinhThuc, 
       quyHoach: isQuyHoach ? "ĐÃ QUY HOẠCH" : "CHƯA QUY HOẠCH",
-      liDoChinhSua
+      liDoChinhSua,
+      hinhAnh:result.secure_url,
+      hinhAnhId:result.public_id,
     });
     res.redirect("/manageList");
   } catch (error) {
     res.send("Không thể thêm điểm đặt");
+    cloudinary.uploader.destroy(result.secure_url);
     console.error(error);
   }
 }
@@ -109,6 +119,7 @@ controller.requestEditAds = async (req, res) => {
     const result = await cloudinary.uploader.upload(req.file.path,{
       folder:'ads'
     });
+    
 
     await models.Requesteditads.create({
       placeId: placeId,
@@ -118,12 +129,12 @@ controller.requestEditAds = async (req, res) => {
       adQuantity, 
       expireDay, 
       liDoChinhSua,
-      imagePath:result.secure_url
+      imagePath:result.secure_url,
+      publicImageId:result.public_id,
     });
     res.redirect("/manageList");
   } catch (error) {
     res.send("Không thể gửi yêu cầu chỉnh sửa bảng QC");
-    
     console.error(error);
 }
 }

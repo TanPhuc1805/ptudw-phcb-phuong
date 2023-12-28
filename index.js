@@ -4,7 +4,12 @@ const expressHbs=require("express-handlebars");
 const Handlebars = require('handlebars');
 require('dotenv').config();
 
+const cors = require('cors');
 
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:4000']
+}));
 
 Handlebars.registerHelper('if_eq', function (a, b, options) {
     if (a == b) {
@@ -41,7 +46,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req, res) => res.redirect('/manageList'));
 
-app.get('/create', (req, res) => {
+app.get('/createTables', (req, res) => {
     let models = require('./models');
     models.sequelize.sync().then(() => res.send('OK'))
 })
