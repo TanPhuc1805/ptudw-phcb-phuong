@@ -1,6 +1,5 @@
 const controller = {};
 const models = require("../models");
-const { Op } = require('sequelize');
 const pool = require("../database/database");
 
 controller.show = async (req, res) => {
@@ -12,7 +11,41 @@ controller.show = async (req, res) => {
     const [reportResult] = await Promise.all([report]);
     res.locals.reports = reportResult.rows;
 
-    res.locals.places = await models.Place.findAll({
+    for (const report of res.locals.reports) {
+      const lat = report.lat; // replace with the actual latitude value
+      const lng = report.lng; // replace with the actual longitude value
+
+      const apiKey = "ylfzo_XrCL0wFOWqMdk89chLwml3by9ZPi5U6J-S3EU";
+
+      const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat}%2C${lng}&lang=vi-VN&apiKey=${apiKey}`;
+
+      const response = await fetch(url);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+          const address = data.items[0].address;
+          const title = address.label;
+          const content = title.replace(/, Hồ Chí Minh, Việt Nam$/, '');
+
+          // Update the reportlocation field in the database
+          await pool.query(
+            `UPDATE "reports" SET "reportlocation" = $1 WHERE id = $2`,
+            [content, report.id]
+          );
+        }
+      } else if (response.status === 401) {
+        console.error("Unauthorized. Please check your HERE API key and permissions.");
+      } else {
+        console.error(`Error fetching data from HERE API. Status: ${response.status}`);
+      }
+    }
+
+res.locals.reports = res.locals.reports.filter(report =>
+  report.reportlocation.includes("Phường 4, Quận 5")
+);
+
+res.locals.places = await models.Place.findAll({
       attributes: [
         "id",
         "diaChi",

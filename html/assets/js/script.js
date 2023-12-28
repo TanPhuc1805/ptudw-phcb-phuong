@@ -1,65 +1,3 @@
-// document
-//   .querySelector("#editUserModal")
-//   .addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#firstNameEdit").focus();
-//   });
-
-// document
-//   .querySelector("#addUserModal")
-//   .addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#firstName").focus();
-//   });
-
-
-// ---------
-// document
-//   .querySelector("#editWardModal")
-//   .addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#wardNameEdit").focus();
-//   });
-
-// document
-//   .querySelector("#addWardModal")
-//   .addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#wardName").focus();
-//   });
-
-// document
-//   .querySelector("#addPlaceModal")
-//   .addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#diaChi").focus();
-//   });
-
-// document
-//   .querySelector("#editPlaceModal")
-//   .addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#diaChiEdit").focus();
-//   });
-
-// document.querySelectorAll(".user-delete-btn").forEach((btnConfirm) => {
-//   btnConfirm.addEventListener("click", (e) => {
-//     let id = e.target.dataset.id;
-//     const options = {
-//       title: "Bạn có chắc chắn muốn xoá?",
-//       type: "danger",
-//       btnOkText: "Xoá",
-//       btnCancelText: "Thoát",
-//       onConfirm: () => {
-//         console.log("Confirm");
-//         console.log(id);
-//         deleteUser(id);
-//       },
-//       onCancel: () => {
-//         console.log("Cancel");
-//       },
-//     };
-//     const {
-//       el,
-//       content,
-//       options: confirmedOptions,
-//     } = bs5dialog.confirm("Bạn có chắc chắn muốn xoá?", options);
-//   });
-// });
 
 document.querySelectorAll(".delete-request-btn").forEach((btnConfirm) => {
   btnConfirm.addEventListener("click", (e) => {
@@ -153,119 +91,6 @@ document.querySelectorAll(".email-request-btn").forEach((btnConfirm) => {
   });
 });
 
-// document.querySelectorAll(".place-delete-btn").forEach((btnConfirm) => {
-//   btnConfirm.addEventListener("click", (e) => {
-//     let id = e.target.dataset.id;
-//     const options = {
-//       title: "Bạn có chắc chắn muốn xoá?",
-//       type: "danger",
-//       btnOkText: "Xoá",
-//       btnCancelText: "Thoát",
-//       onConfirm: () => {
-//         console.log("Confirm");
-//         console.log(id);
-//         deletePlace(id);
-//       },
-//       onCancel: () => {
-//         console.log("Cancel");
-//       },
-//     };
-//     const {
-//       el,
-//       content,
-//       options: confirmedOptions,
-//     } = bs5dialog.confirm("Bạn có chắc chắn muốn xoá?", options);
-//   });
-// });
-
-// function showEditWardModal(btn) {
-//   document.querySelector("#idWard").value = btn.dataset.id;
-//   document.querySelector("#wardNameEdit").value = btn.dataset.wardName;
-//   document.querySelector("#districtNameEdit").value = btn.dataset.districtName;
-//   document.querySelector("#zipCodeEdit").value = btn.dataset.zipCode;
-//   document.querySelector("#populationEdit").value = btn.dataset.population;
-// }
-
-// function showEditPlaceModal(btn) {
-//   document.querySelector("#idPlace").value = btn.dataset.id;
-//   document.querySelector("#diaChiEdit").value = btn.dataset.diaChi;
-//   document.querySelector("#khuVucEdit").value = btn.dataset.khuVuc;
-//   document.querySelector("#loaiVTEdit").value = btn.dataset.loaiVt;
-//   document.querySelector("#hinhThucEdit").value = btn.dataset.hinhThuc;
-//   document.querySelector("#quyHoachEdit").checked = btn.dataset.quyHoach == "ĐÃ QUY HOẠCH" ? true : false;
-// }
-
-// function showEditUserModal(btn) {
-//   document.querySelector("#id").value = btn.dataset.id;
-//   document.querySelector("#usernameEdit").value = btn.dataset.username;
-//   document.querySelector("#firstNameEdit").value = btn.dataset.firstName;
-//   document.querySelector("#lastNameEdit").value = btn.dataset.lastName;
-//   document.querySelector("#mobileEdit").value = btn.dataset.mobile;
-//   document.querySelector("#isAdminEdit").checked = btn.dataset.isAdmin == "true" ? true : false;
-// }
-
-// async function editWard(e) {
-//   e.preventDefault();
-
-//   const formData = new FormData(document.getElementById("editWardForm"));
-//   const data = Object.fromEntries(formData.entries());
-
-//   // data = {
-//   //   wardName: document.querySelector('#wardNameEdit').value,
-//   // }
-
-//   let res = await fetch('/danh-sach/wards', {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   location.reload();
-// }
-
-// async function editPlace(e) {
-//   e.preventDefault();
-
-//   const formData = new FormData(document.getElementById("editPlaceForm"));
-//   const data = Object.fromEntries(formData.entries());
-
-//   // data = {
-//   //   wardName: document.querySelector('#wardNameEdit').value,
-//   // }
-
-//   let res = await fetch('/danh-sach/places', {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   location.reload();
-// }
-
-// async function editUser(e) {
-//   e.preventDefault();
-
-//   const formData = new FormData(document.getElementById("editUserForm"));
-//   const data = Object.fromEntries(formData.entries());
-
-//   // data = {
-//   //   firstName: document.querySelector('#firstNameEdit').value,
-//   // }
-
-//   let res = await fetch('/users', {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   location.reload();
-// }
 
 async function deleteRequest(id) {
   let res = await fetch(`/requests/request/${id}`, {
@@ -275,28 +100,7 @@ async function deleteRequest(id) {
   location.reload();
 }
 
-// async function deleteWard(id) {
-//   let res = await fetch(`/danh-sach/wards/${id}`, {
-//     method: "DELETE",
-//   });
 
-//   location.reload();
-// }
-
-// async function deletePlace(id) {
-//   let res = await fetch(`/danh-sach/places/${id}`, {
-//     method: "DELETE",
-//   });
-
-//   location.reload();
-// }
-// ---------
-// let editPlaceEle = document.querySelector("#editPlaceModal");
-// if (editPlaceEle) {
-//   editPlaceEle.addEventListener("shown.bs.modal", () => {
-//     document.querySelector("#diaChiEdit").focus();
-//   });
-// }
 
 let editPlaceEle = document.querySelector("#editPlaceModal");
 
@@ -525,30 +329,7 @@ function closeViewAdsDetail(elm) {
   elm.closest('.modal.detail-ads').style.display = "none";
   document.querySelector('.modal-backdrop.fade.show').remove();
 }
-// searching
-document.getElementById('phuongDropdown').addEventListener('change', function () {
-  var selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
-  // Check if "All Phường" is selected
-  if (selectedOptions.includes('all')) {
-      // Show all rows
-      document.querySelectorAll('#filteredContent tbody tr').forEach(function (row) {
-          row.style.display = '';
-      });
-  } else {
-      // Hide all rows
-      document.querySelectorAll('#filteredContent tbody tr').forEach(function (row) {
-          row.style.display = 'none';
-      });
-      // Show rows for selected Phường values
-      selectedOptions.forEach(function (phuong) {
-          var rowsToShow = document.querySelectorAll('#filteredContent tbody tr[data-phuong="' + phuong + '"]');
-          rowsToShow.forEach(function (row) {
-              row.style.display = '';
-          });
-      });
-  }
-});
-;
+
 
 function checkValidDate(elm, event) {
   event.preventDefault();
@@ -715,3 +496,5 @@ function sendEmailReport(email,tenNguoiBaoCao,hinhThucBaoCao,phone,cachThucXuLy,
   })
   .catch();
 }
+
+

@@ -1,6 +1,8 @@
 const controller={};
 const models = require("../models");
 const moment = require('moment');
+const cloudinary=require('../middlewares/cloudinary');
+const upload=require('../middlewares/multer');
 controller.show = async (req, res) => {
   
   res.locals.adstypes = await models.Adstype.findAll({
@@ -104,6 +106,10 @@ controller.requestEditAds = async (req, res) => {
   let originId = adsOriginPlace.getDataValue("id");
 
   try {
+    const result = await cloudinary.uploader.upload(req.file.path,{
+      folder:'ads'
+    });
+
     await models.Requesteditads.create({
       placeId: placeId,
       originId: originId,
@@ -111,11 +117,13 @@ controller.requestEditAds = async (req, res) => {
       adSize, 
       adQuantity, 
       expireDay, 
-      liDoChinhSua
+      liDoChinhSua,
+      imagePath:result.secure_url
     });
     res.redirect("/manageList");
   } catch (error) {
     res.send("Không thể gửi yêu cầu chỉnh sửa bảng QC");
+    
     console.error(error);
 }
 }

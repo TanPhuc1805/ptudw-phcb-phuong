@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 4000;
 const expressHbs=require("express-handlebars");
 const Handlebars = require('handlebars');
+require('dotenv').config();
+
+
 
 Handlebars.registerHelper('if_eq', function (a, b, options) {
     if (a == b) {
@@ -33,6 +35,7 @@ app.engine('hbs', expressHbs.engine({
         showIndex: (index) => index + 1,
     }
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -41,7 +44,7 @@ app.get('/', (req, res) => res.redirect('/manageList'));
 app.get('/create', (req, res) => {
     let models = require('./models');
     models.sequelize.sync().then(() => res.send('OK'))
-  })
+})
 
 app.use('/manageList',require('./routes/manageListRouter'));
 app.use('/notifications',require('./routes/notificationsRouter'));
@@ -52,4 +55,5 @@ app.use('/changePassword',require('./routes/changePasswordRouter'));
 
 app.set("view engine","hbs");
 
-app.listen(port,()=>console.log(`Example app listening on port ${port}!`));
+
+app.listen(process.env.PORT,()=>console.log(`Example app listening on port ${process.env.PORT}!`));

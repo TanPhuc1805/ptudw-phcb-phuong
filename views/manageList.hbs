@@ -1,7 +1,7 @@
 {{!-- modal request_edit_place --}}
 <div class="modal fade" id="fixPlaceModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form action="/manageList/editplace" id="addPlaceForm" method="POST" onsubmit="editPlace(event)">
+    <form action="/manageList/editplace" id="addPlaceForm" method="POST">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
@@ -84,7 +84,7 @@
 
 <div class="modal fade" id="editAdsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form action="/manageList/editads" id="editAdsForm" method="POST" onsubmit="editAds(event)">
+    <form action="/manageList/editads" id="editAdsForm" method="POST" enctype="multipart/form-data">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
@@ -145,6 +145,22 @@
               </h6>
             </div>
           </div>
+          <div class="container pt-3 pb-3">
+                          <div class="card bg-dark">
+                            <div class="profile-pic">
+                              <div class="image-container">
+                                <img src="../assets/img/places/stt27.png" class="imageDisplay" width="100%" height="250px"
+                                  style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; object-fit: cover; position: relative; border-radius:5px;" />
+                                <label class="btn btn-primary" for="file"
+                                  style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
+                                  <span class="glyphicon glyphicon-camera"></span>
+                                  <span>Đổi hình ảnh</span>
+                                </label>
+                                <input id="file" name="ImageUrl" type="file" style="display: none;" onchange="loadFile(event)" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
           <div class="text-center badge bg-label-danger" id="errorMessage"></div>
         </div>
         <div class="modal-footer">
@@ -770,4 +786,17 @@
 
     {{>footer}}
   </div>
+<script>
+  const handleImage = (e) =>{
+        const file = event.target.files[0];
+
+        setFileToBase(file);
+    }
+    const setFileToBase = (file) =>{
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        console.log(reader);
+    }
+    
+</script>
 </main>
