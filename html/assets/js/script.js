@@ -2,6 +2,8 @@
 document.querySelectorAll(".delete-request-btn").forEach((btnConfirm) => {
   btnConfirm.addEventListener("click", (e) => {
     let id = e.target.dataset.id;
+    let hinhAnhId=e.target.dataset.hinhAnhId;
+    console.log(hinhAnhId);
     const options = {
       title: "Bạn có chắc chắn xoá yêu cầu này?",
       type: "danger",
@@ -10,7 +12,7 @@ document.querySelectorAll(".delete-request-btn").forEach((btnConfirm) => {
       onConfirm: () => {
         console.log("Confirm");
         console.log(id);
-        deleteRequest(id);
+        deleteRequest(id,hinhAnhId);
       },
       onCancel: () => {
         console.log("Cancel");
@@ -92,11 +94,14 @@ document.querySelectorAll(".email-request-btn").forEach((btnConfirm) => {
 });
 
 
-async function deleteRequest(id) {
+async function deleteRequest(id,hinhAnhId) {
   let res = await fetch(`/requests/request/${id}`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ hinhAnhId: hinhAnhId }),
   });
-
   location.reload();
 }
 
@@ -154,6 +159,8 @@ function showEditRequestModal(btn) {
   document.querySelector("#ngayBatDauEditRequest").value = btn.dataset.ngayBatDau;
   document.querySelector("#ngayKetThucEditRequest").value = btn.dataset.ngayKetThuc;
   document.querySelector('#editRequestImg').src=btn.dataset.hinhAnh;
+  document.querySelector('#hinhAnhIdRequest').value=btn.dataset.hinhAnhId;
+  
 }
 
 function showEditAdsModal(btn) {
@@ -172,18 +179,13 @@ async function editRequest(e) {
 
   const formData = new FormData(document.getElementById("editRequestForm"));
   const data = Object.fromEntries(formData.entries());
-  
 
   let res = await fetch(`/requests/editRequest`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    
+    body:formData,
   });
   
-  console.log(data);
+
   location.reload();
 }
 

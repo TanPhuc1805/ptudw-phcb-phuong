@@ -5,7 +5,7 @@ const cloudinary=require('../middlewares/cloudinary');
 
 controller.deleteRequest=async(req,res)=>{
   let id = isNaN(req.params.id) ? 0 : parseInt(req.params.id);
-  let hinhAnhId = req.params.hinhAnhId;
+  let hinhAnhId = req.body.hinhAnhId;
   try {
     await models.Requestads.destroy(
       {where: {id}}
@@ -57,7 +57,7 @@ controller.addRequest = async (req, res) => {
   let placeId = requestPlace.getDataValue("id");
   try {
     const result = await cloudinary.uploader.upload(req.file.path,{
-      folder:'requests'
+      folder:'requestAds'
     });
 
     await models.Requestads.create({
@@ -153,7 +153,6 @@ controller.show= async (req,res)=>{
 };
 
 controller.editRequest = async (req, res) => {
-  console.log("akjds");
   let {id,
     congTy,
     diaChiCongTy,
@@ -166,7 +165,8 @@ controller.editRequest = async (req, res) => {
     soLuong,
     ngayBatDau,
     ngayKetThuc,
-    tinhTrang} = req.body;
+    tinhTrang,
+    hinhAnhId} = req.body;
 
     const ngayBatDauDate = moment(ngayBatDau, 'MM/DD/YYYY', true);
     const ngayKetThucDate = moment(ngayKetThuc, 'MM/DD/YYYY', true);
@@ -194,11 +194,11 @@ controller.editRequest = async (req, res) => {
 
   try {
 
-    // const result = await cloudinary.uploader.upload(req.file.path,{
-    //   folder:'requests'
-    // });
+    const result = await cloudinary.uploader.upload(req.file.path,{
+      folder:'requestAds'
+    });
 
-    // await cloudinary.uploader.destroy(hinhAnhId);
+    await cloudinary.uploader.destroy(hinhAnhId);
 
     await models.Requestads.update(
       { 
@@ -214,8 +214,8 @@ controller.editRequest = async (req, res) => {
         ngayBatDau,
         ngayKetThuc,
         tinhTrang,
-        // hinhAnh:result.secure_url,
-        // hinhAnhId:result.public_id,
+        hinhAnh:result.secure_url,
+        hinhAnhId:result.public_id,
       },
       {where: {id}}
     );
