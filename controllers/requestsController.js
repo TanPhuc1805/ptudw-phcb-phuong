@@ -10,7 +10,7 @@ controller.deleteRequest=async(req,res)=>{
     await models.Requestads.destroy(
       {where: {id}}
     );
-    await cloudinary.uploader.destroy(hinhAnhId);
+    if(hinhAnhId) await cloudinary.uploader.destroy(hinhAnhId);
     res.send("Đã xoá yêu cầu!");
   } catch (error) {
     res.send("Không thể xoá yêu cầu!");
@@ -32,7 +32,7 @@ controller.addRequest = async (req, res) => {
     ngayBatDau,
     ngayKetThuc,
   } = req.body;
-  console.log(req.body);
+  result={}
 
   const ngayBatDauDate = moment(ngayBatDau, 'MM/DD/YYYY', true);
   const ngayKetThucDate = moment(ngayKetThuc, 'MM/DD/YYYY', true);
@@ -55,10 +55,13 @@ controller.addRequest = async (req, res) => {
     where: {diaChi: diaChiRequest} 
   });
   let placeId = requestPlace.getDataValue("id");
+  
   try {
-    const result = await cloudinary.uploader.upload(req.file.path,{
+    if (req.file && req.file.path){
+    result = await cloudinary.uploader.upload(req.file.path,{
       folder:'requestAds'
     });
+  }
 
     await models.Requestads.create({
       congTy,
@@ -69,15 +72,18 @@ controller.addRequest = async (req, res) => {
       tenBangQuangCao,
       noiDungQC,
       kichThuoc,
-      soLuong,
+      soLuong:soLuong||0,
       ngayBatDau,
       ngayKetThuc,
       tinhTrang: 'Chờ phê duyệt',
-      hinhAnh:result.secure_url,
-      hinhAnhId:result.public_id,
+      hinhAnh:result.secure_url||'',
+      hinhAnhId:result.public_id|'',
     });
     res.redirect('/requests');
   } catch (error) {
+    if (result.public_id) {
+      await cloudinary.uploader.destroy(result.public_id);
+    }
     res.send('Không thể thêm');
     console.error(error);
   }
@@ -167,6 +173,7 @@ controller.editRequest = async (req, res) => {
     ngayKetThuc,
     tinhTrang,
     hinhAnhId} = req.body;
+    let result ={}
 
     const ngayBatDauDate = moment(ngayBatDau, 'MM/DD/YYYY', true);
     const ngayKetThucDate = moment(ngayKetThuc, 'MM/DD/YYYY', true);
@@ -193,16 +200,13 @@ controller.editRequest = async (req, res) => {
     let placeId = requestPlace.getDataValue("id");
 
   try {
-
-    const result = await cloudinary.uploader.upload(req.file.path,{
-      folder:'requestAds'
-    });
-
-    await cloudinary.uploader.destroy(hinhAnhId);
-
-    await models.Requestads.update(
-      { 
-        congTy,
+    if (req.file && req.file.path) {
+      result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'requestAds'
+      });
+    }
+    const updateData={
+      congTy,
         diaChiCongTy,
         dienThoai,
         email,
@@ -210,17 +214,24 @@ controller.editRequest = async (req, res) => {
         tenBangQuangCao,
         noiDungQC,
         kichThuoc,
-        soLuong,
+        soLuong:soLuong||0,
         ngayBatDau,
         ngayKetThuc,
         tinhTrang,
-        hinhAnh:result.secure_url,
-        hinhAnhId:result.public_id,
-      },
-      {where: {id}}
-    );
+    }
+    if (result.secure_url) {
+      updateData.hinhAnh = result.secure_url;
+      updateData.hinhAnhId = result.public_id;
+    }
+    await models.Requestads.update(updateData,{where: {id}});
+    if (hinhAnhId && result.secure_url) {
+      await cloudinary.uploader.destroy(hinhAnhId);
+    }
     res.send("Đã cập nhật yêu cầu!");
   } catch (error) {
+    if (result.public_id) {
+      await cloudinary.uploader.destroy(result.public_id);
+    }
     res.send("Không thể cập nhật yêu cầu!");
     console.error(error);
   }
